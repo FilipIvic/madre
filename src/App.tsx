@@ -215,11 +215,17 @@ const Hero = () => {
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          alt="Madre bistro"
+        <video
           className="w-full h-full object-cover"
-          src="/images/hero.jpg"
-        />
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/images/hero.jpg"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/35"></div>
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
