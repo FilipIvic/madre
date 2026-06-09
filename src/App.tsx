@@ -427,7 +427,7 @@ const Menu = () => {
 
         <div className="text-center mt-12">
           <a
-            href="https://stupendous-axolotl-8be28a.netlify.app/"
+            href="https://madre-menu.netlify.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1"
