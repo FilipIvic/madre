@@ -156,7 +156,10 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-surface/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
+    <nav
+      style={{ transform: "translateZ(0)" }}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-surface/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}
+    >
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
         <div className={`font-headline italic text-2xl transition-colors ${isScrolled ? "text-primary" : "text-white"}`}>Madre</div>
 
@@ -223,6 +226,9 @@ const Hero = () => {
           playsInline
           preload="auto"
           poster="/images/hero.jpg"
+          // Promote to its own compositing layer so the navbar's backdrop-blur
+          // samples a stable layer (avoids the purple flash on first scroll).
+          style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
