@@ -140,6 +140,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 const Navbar = ({ onReserve }: { onReserve: () => void }) => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -150,15 +151,26 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
   ];
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      // Only blur once the navbar has cleared the hero video, since
+      // backdrop-blur over a <video> triggers a purple compositing artifact.
+      setPastHero(window.scrollY > window.innerHeight - 80);
+    };
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      style={{ transform: "translateZ(0)" }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-surface/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        !isScrolled
+          ? "bg-transparent py-6"
+          : pastHero
+            ? "bg-surface/90 backdrop-blur-md shadow-sm py-4"
+            : "bg-surface shadow-sm py-4"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
         <div className={`font-headline italic text-2xl transition-colors ${isScrolled ? "text-primary" : "text-white"}`}>Madre</div>
@@ -226,9 +238,6 @@ const Hero = () => {
           playsInline
           preload="auto"
           poster="/images/hero.jpg"
-          // Promote to its own compositing layer so the navbar's backdrop-blur
-          // samples a stable layer (avoids the purple flash on first scroll).
-          style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
