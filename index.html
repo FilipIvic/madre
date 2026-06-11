@@ -1,19 +1,58 @@
 <!doctype html>
 <html lang="hr">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-D57XWMHTN6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      // GDPR — deny analytics storage until the visitor consents (Consent Mode v2).
+      gtag("consent", "default", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: "denied",
+        wait_for_update: 500,
+      });
+
+      // Restore a prior "accept" as early as possible so returning visitors are tracked.
+      try {
+        if (localStorage.getItem("madre-consent") === "granted") {
+          gtag("consent", "update", { analytics_storage: "granted" });
+        }
+      } catch (e) {}
+
+      gtag("config", "G-D57XWMHTN6");
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Madre Bistro Split — Tjestenina, Manistra i Pasta | Restoran u Splitu</title>
+    <title>Madre Bistro Split — Domaća Pasta, Tjestenina i Manistra</title>
     <meta
       name="description"
-      content="Madre Bistro — ručno rađena tjestenina, manistra i pasta od domaćih sastojaka u srcu Splita. Prava spiza dvojice prijatelja, bez kemijanja. Hand-made pasta restaurant in Split, Croatia."
+      content="Domaća pasta i ručno rađena tjestenina u Splitu. Madre Bistro — manistra, njoki i prava dalmatinska spiza od domaćih sastojaka, bez kemijanja. Homemade pasta restaurant in Split, Croatia."
     />
     <meta
       name="keywords"
-      content="restoran Split, bistro Split, tjestenina Split, manistra Split, pasta Split, talijanski restoran Split, dalmatinska kuhinja, Madre Bistro, restaurant Split, pasta restaurant Split, manistra Dalmacija"
+      content="pasta Split, domaća pasta Split, domaća tjestenina Split, ručno rađena pasta Split, tjestenina Split, manistra Split, njoki Split, restoran Split, bistro Split, talijanski restoran Split, dalmatinska kuhinja, homemade pasta Split, pasta restaurant Split, Madre Bistro"
     />
+    <meta name="author" content="Madre Bistro" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://madre-bistro.netlify.app" />
+
+    <!-- Local / geo signals (Split, Croatia) -->
+    <meta name="geo.region" content="HR-21" />
+    <meta name="geo.placename" content="Split" />
+    <meta name="geo.position" content="43.508133;16.440193" />
+    <meta name="ICBM" content="43.508133, 16.440193" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -21,19 +60,42 @@
     <meta name="theme-color" content="#9a4025" />
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="restaurant" />
     <meta property="og:url" content="https://madre-bistro.netlify.app" />
     <meta
       property="og:title"
-      content="Madre Bistro — prava spiza, Split"
+      content="Madre Bistro — domaća pasta i tjestenina u Splitu"
     />
     <meta
       property="og:description"
-      content="Ručno rađena dalmatinska tjestenina od domaćih sastojaka u srcu Splita. Prava spiza, bez kemikalija i prečaca."
+      content="Domaća pasta i ručno rađena dalmatinska tjestenina od domaćih sastojaka u srcu Splita. Prava spiza, bez kemikalija i prečaca."
     />
-    <meta property="og:image" content="https://madre-bistro.netlify.app/images/hero.jpg" />
+    <meta
+      property="og:image"
+      content="https://madre-bistro.netlify.app/images/hero.jpg"
+    />
+    <meta
+      property="og:image:alt"
+      content="Domaća pasta u Madre Bistrou, Split"
+    />
     <meta property="og:locale" content="hr_HR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="Madre Bistro" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Madre Bistro — domaća pasta i tjestenina u Splitu"
+    />
+    <meta
+      name="twitter:description"
+      content="Domaća pasta i ručno rađena dalmatinska tjestenina od domaćih sastojaka u srcu Splita."
+    />
+    <meta
+      name="twitter:image"
+      content="https://madre-bistro.netlify.app/images/hero.jpg"
+    />
 
     <!-- Structured data (Google rich results) -->
     <script type="application/ld+json">
@@ -41,14 +103,71 @@
         "@context": "https://schema.org",
         "@type": "Restaurant",
         "name": "Madre Bistro",
-        "description": "Bistro u srcu Splita — ručno rađena tjestenina, manistra i pasta od domaćih sastojaka, bez kemijanja. Prava dalmatinska spiza.",
+        "description": "Bistro u srcu Splita — domaća pasta i ručno rađena tjestenina, manistra i njoki od domaćih sastojaka, bez kemijanja. Prava dalmatinska spiza.",
         "url": "https://madre-bistro.netlify.app",
         "telephone": "+385953545315",
         "email": "madre.split@gmail.com",
         "image": "https://madre-bistro.netlify.app/images/hero.jpg",
         "logo": "https://madre-bistro.netlify.app/images/favicon.png",
-        "servesCuisine": ["Tjestenina", "Manistra", "Pasta", "Dalmatinska", "Mediteranska", "Talijanska"],
+        "servesCuisine": [
+          "Tjestenina",
+          "Manistra",
+          "Pasta",
+          "Njoki",
+          "Dalmatinska",
+          "Mediteranska",
+          "Talijanska"
+        ],
+        "keywords": "pasta Split, domaća pasta Split, domaća tjestenina Split, ručno rađena tjestenina, manistra Split, njoki Split, restoran Split, homemade pasta Split",
         "priceRange": "€€",
+        "currenciesAccepted": "EUR",
+        "acceptsReservations": "True",
+        "areaServed": {
+          "@type": "City",
+          "name": "Split"
+        },
+        "hasMenu": {
+          "@type": "Menu",
+          "name": "Jelovnik",
+          "url": "https://madre-menu.netlify.app/",
+          "inLanguage": "hr",
+          "hasMenuSection": {
+            "@type": "MenuSection",
+            "name": "Naše posebnosti",
+            "hasMenuItem": [
+              {
+                "@type": "MenuItem",
+                "name": "Njoki s tartufima",
+                "description": "Ručno rađeni njoki u kremastom umaku od tartufa, s pršutom, hrskavim panko mrvicama i svježe naribanim tartufom.",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "24",
+                  "priceCurrency": "EUR"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Tagliatelle s mortadelom i pistacijama",
+                "description": "Ručno rađeni tagliatelle s pestom od bosiljka i pistacija, mortadelom i kremastom mini burratom.",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "22",
+                  "priceCurrency": "EUR"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Ručno rađeni linguini u umaku od pomidora",
+                "description": "Ručno valjani linguini u dugo kuhanom umaku od pomidora, s uljem bosiljka i parmezanom.",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "13",
+                  "priceCurrency": "EUR"
+                }
+              }
+            ]
+          }
+        },
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Ul. kralja Zvonimira 12",
@@ -76,9 +195,7 @@
             "closes": "23:00"
           }
         ],
-        "sameAs": [
-          "https://www.instagram.com/madre.split/"
-        ]
+        "sameAs": ["https://www.instagram.com/madre.split/"]
       }
     </script>
   </head>
