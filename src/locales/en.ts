@@ -91,6 +91,12 @@ const en = {
     emailSubject: "Table Reservation - Madre Bistro",
     hours: "Open Tue–Sun 14:00–23:00, closed on Mondays",
   },
+  consent: {
+    text: "We use cookies to measure traffic with Google Analytics. You can accept or decline.",
+    accept: "Accept",
+    decline: "Decline",
+    learnMore: "Privacy Policy",
+  },
 };
 
 export default en;

@@ -91,6 +91,12 @@ const hr = {
     emailSubject: "Rezervacija stola - Madre Bistro",
     hours: "Radimo uto–ned 14:00–23:00, ponediljkom zatvoreno",
   },
+  consent: {
+    text: "Koristimo kolačiće za mjerenje posjećenosti putem Google Analyticsa. Možeš prihvatiti ili odbiti.",
+    accept: "Prihvati",
+    decline: "Odbij",
+    learnMore: "Politika privatnosti",
+  },
 };
 
 export default hr;
