@@ -77,12 +77,6 @@ npm run build
 
 Output is in the `dist/` folder — upload this to any static hosting provider.
 
-### Free Hosting Options
-
-- **[Vercel](https://vercel.com)** ← recommended, drag & drop `dist/` folder
-- **[Netlify](https://netlify.com)** — same as Vercel
-- **[GitHub Pages](https://pages.github.com)** — free if code is on GitHub
-
 ---
 
 ## Project Structure
@@ -99,11 +93,3 @@ Output is in the `dist/` folder — upload this to any static hosting provider.
 ├── index.html
 └── vite.config.ts
 ```
-
----
-
-## Contact Info (update in `App.tsx`)
-
-- **Phone:** +385 21 445 678
-- **Email:** ciao@madre.hr
-- **Address:** Ul. kralja Zvonimira 12, 21000 Split, Croatia

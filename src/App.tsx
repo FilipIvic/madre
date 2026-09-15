@@ -339,6 +339,64 @@ const About = () => {
   );
 };
 
+const dailySpecials = [
+  { group: "dailyStarter", items: [{ key: "soup", price: 6 }] },
+  { group: "dailyMains", items: [{ key: "njoki", price: 14 }, { key: "chicken", price: 12 }, { key: "lamb", price: 15 }] },
+  { group: "dailyDessert", items: [{ key: "tiramisu", price: 6 }] },
+];
+
+const DailySpecials = () => {
+  const { t } = useTranslation();
+  return (
+    <motion.div
+      id="dnevna-jela"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="md:col-span-12 bg-white rounded-xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 group"
+    >
+      <div className="md:col-span-5 h-72 md:h-auto overflow-hidden">
+        <img
+          alt={t("menu.daily.njoki.name")}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          src="/images/njoki-pasticada.jpg"
+        />
+      </div>
+      <div className="md:col-span-7 p-8 md:p-10">
+        <span className="inline-block font-body text-white bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-4">
+          {t("menu.dailyBadge")}
+        </span>
+        <h3 className="font-headline text-3xl text-primary mb-2">{t("menu.dailyHeadline")}</h3>
+        <p className="flex items-center gap-2 text-sm text-secondary mb-8">
+          <Clock size={16} /> {t("menu.dailyHours")}
+        </p>
+        <div className="space-y-6">
+          {dailySpecials.map((section) => (
+            <div key={section.group}>
+              <h4 className="font-body font-bold text-xs uppercase tracking-widest text-tertiary mb-3">
+                {t(`menu.${section.group}`)}
+              </h4>
+              <div className="space-y-3">
+                {section.items.map((item) => (
+                  <div key={item.key}>
+                    <div className="flex justify-between items-baseline gap-4">
+                      <p className="font-headline text-lg">{t(`menu.daily.${item.key}.name`)}</p>
+                      <span className="font-headline text-tertiary whitespace-nowrap">€{item.price}</span>
+                    </div>
+                    <p className="text-sm text-on-surface-variant italic">{t(`menu.daily.${item.key}.desc`)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-secondary mt-8 opacity-80">{t("menu.dailyNote")}</p>
+      </div>
+    </motion.div>
+  );
+};
+
 const Menu = () => {
   const { t } = useTranslation();
   return (
@@ -361,13 +419,13 @@ const Menu = () => {
               <img
                 alt={t("menu.dish1Name")}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                src="/images/jelo-1.jpg"
+                src="/images/njoki-tartuf.jpg"
               />
             </div>
             <div className="p-8">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-headline text-3xl text-primary">{t("menu.dish1Name")}</h3>
-                <span className="font-headline text-xl text-tertiary">€24</span>
+                <span className="font-headline text-xl text-tertiary">€20</span>
               </div>
               <p className="text-on-surface-variant leading-relaxed">{t("menu.dish1Desc")}</p>
             </div>
@@ -385,13 +443,13 @@ const Menu = () => {
                 <img
                   alt={t("menu.dish2Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="/images/jelo-2.jpg"
+                  src="/images/linguine-buca-panceta.jpg"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center">
                 <h4 className="font-headline text-xl mb-2">{t("menu.dish2Name")}</h4>
                 <p className="text-sm text-on-surface-variant">{t("menu.dish2Desc")}</p>
-                <span className="mt-4 font-headline text-tertiary">€22</span>
+                <span className="mt-4 font-headline text-tertiary">€21</span>
               </div>
             </motion.div>
 
@@ -406,32 +464,19 @@ const Menu = () => {
                 <img
                   alt={t("menu.dish3Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="/images/jelo-3.jpg"
+                  src="/images/ravioli-ricotta-pistacio.jpg"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center text-right">
                 <h4 className="font-headline text-xl mb-2">{t("menu.dish3Name")}</h4>
                 <p className="text-sm text-on-surface-variant">{t("menu.dish3Desc")}</p>
-                <span className="mt-4 font-headline text-tertiary">€13</span>
+                <span className="mt-4 font-headline text-tertiary">€19</span>
               </div>
             </motion.div>
           </div>
 
-          {/* Bottom Wide Banner */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-12 bg-secondary text-white rounded-xl p-10 flex flex-col md:flex-row items-center gap-8 shadow-sm"
-          >
-            <div className="flex-1">
-              <h3 className="font-headline text-3xl mb-4">{t("menu.specialName")}</h3>
-              <p className="opacity-90">{t("menu.specialDesc")}</p>
-            </div>
-            <a href="#contact" className="bg-white text-primary px-10 py-4 rounded-lg font-bold hover:bg-surface-container transition-colors whitespace-nowrap">
-              {t("menu.specialCta")}
-            </a>
-          </motion.div>
+          {/* Daily Specials */}
+          <DailySpecials />
         </div>
 
         <div className="text-center mt-12">
@@ -465,15 +510,30 @@ const Gallery = () => {
     { src: "/images/galerija-5.jpg", alt: t("gallery.alt5") },   // drveni ormar
     // Uz čašu
     { src: "/images/galerija-10.jpg", alt: t("gallery.alt10") }, // nazdravljanje
-    // Spiza
-    { src: "/images/galerija-2.jpg", alt: t("gallery.alt2") },   // ravioli
+    // Spiza — predjela
+    { src: "/images/galerija-19.jpg", alt: t("gallery.alt19") }, // juha od buče
+    { src: "/images/galerija-20.jpg", alt: t("gallery.alt20") }, // komiške spring role
+    { src: "/images/galerija-21.jpg", alt: t("gallery.alt21") }, // tatarski biftek
+    { src: "/images/galerija-22.jpg", alt: t("gallery.alt22") }, // pileća pašteta
+    { src: "/images/galerija-3.jpg", alt: t("gallery.alt3") },   // arancini
+    { src: "/images/galerija-4.jpg", alt: t("gallery.alt4") },   // carpaccio
+    { src: "/images/galerija-17.jpg", alt: t("gallery.alt17") }, // parmigiana
+    // Spiza — njoki
+    { src: "/images/galerija-23.jpg", alt: t("gallery.alt23") }, // njoki pivac i gljive
+    { src: "/images/galerija-24.jpg", alt: t("gallery.alt24") }, // njoki lignja i bob
     { src: "/images/galerija-11.jpg", alt: t("gallery.alt11") }, // njoki s junetinom
+    // Spiza — manistra
+    { src: "/images/galerija-25.jpg", alt: t("gallery.alt25") }, // tagliatelle junetina
+    { src: "/images/galerija-26.jpg", alt: t("gallery.alt26") }, // linguine adria
+    { src: "/images/galerija-27.jpg", alt: t("gallery.alt27") }, // manistra i šalša
+    { src: "/images/galerija-2.jpg", alt: t("gallery.alt2") },   // ravioli
     { src: "/images/galerija-9.jpg", alt: t("gallery.alt9") },   // tagliatelle ragu
     { src: "/images/galerija-13.jpg", alt: t("gallery.alt13") }, // tagliatelle burrata
     { src: "/images/galerija-15.jpg", alt: t("gallery.alt15") }, // kremasta tjestenina
-    { src: "/images/galerija-17.jpg", alt: t("gallery.alt17") }, // lazanje
-    { src: "/images/galerija-3.jpg", alt: t("gallery.alt3") },   // arancini
-    { src: "/images/galerija-4.jpg", alt: t("gallery.alt4") },   // carpaccio
+    // Spiza — slatko
+    { src: "/images/galerija-28.jpg", alt: t("gallery.alt28") }, // crème brûlée od buče
+    { src: "/images/galerija-29.jpg", alt: t("gallery.alt29") }, // kruška i kozji sir
+    { src: "/images/galerija-30.jpg", alt: t("gallery.alt30") }, // 3 praline
     { src: "/images/galerija-6.jpg", alt: t("gallery.alt6") },   // tiramisu
   ];
 
@@ -552,7 +612,11 @@ const Contact = () => {
                 <div className="flex flex-col gap-2 text-on-surface-variant max-w-xs">
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.tueSun")}</p>
-                    <p>14:00 — 23:00</p>
+                    <p>11:00 — 23:00</p>
+                  </div>
+                  <div className="flex justify-between gap-8 text-sm opacity-80">
+                    <p>{t("contact.dailyMenu")}</p>
+                    <p>11:00 — 18:00</p>
                   </div>
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.mon")}</p>
