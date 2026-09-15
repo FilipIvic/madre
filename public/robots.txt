@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://madre-bistro.netlify.app/sitemap.xml
+Sitemap: https://madrebistro.netlify.app/sitemap.xml
