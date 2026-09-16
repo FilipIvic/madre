@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && (puppeteer browsers install chrome || echo '[prerender] Chrome install failed') && node scripts/prerender.mjs",
     "build:client": "vite build",
     "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview",
