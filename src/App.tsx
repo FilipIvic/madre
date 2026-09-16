@@ -276,7 +276,7 @@ const Hero = () => {
           // in from opacity 0 made Google measure it only after JavaScript loaded.
           className="max-w-2xl"
         >
-          <span className="inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6">
+          <span className="hidden md:inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6">
             {t("hero.badge")}
           </span>
           <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl text-white mb-6 leading-tight tracking-tight">
