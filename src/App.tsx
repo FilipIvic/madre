@@ -34,6 +34,7 @@ const LanguageSwitcher = ({ light = false }: { light?: boolean }) => {
       <button
         type="button"
         onClick={() => i18n.changeLanguage("hr")}
+        aria-pressed={current === "hr"}
         className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${current === "hr" ? activeClass : inactiveClass}`}
       >
         <span className="text-base leading-none">🇭🇷</span> HR
@@ -42,6 +43,7 @@ const LanguageSwitcher = ({ light = false }: { light?: boolean }) => {
       <button
         type="button"
         onClick={() => i18n.changeLanguage("en")}
+        aria-pressed={current === "en"}
         className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${current === "en" ? activeClass : inactiveClass}`}
       >
         <span className="text-base leading-none">🇬🇧</span> EN
@@ -111,6 +113,9 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
         exit={{ opacity: 0, scale: 0.96, y: 40 }}
         transition={{ type: "spring", duration: 0.4 }}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reservation-title"
       >
         <button
           type="button"
@@ -121,7 +126,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
           <X size={20} />
         </button>
 
-        <h2 className="font-headline text-2xl text-primary mb-2">{t("modal.headline")}</h2>
+        <h2 id="reservation-title" className="font-headline text-2xl text-primary mb-2">{t("modal.headline")}</h2>
         <p className="font-body text-sm text-on-surface-variant mb-6">
           {t("modal.body")}
         </p>
@@ -174,7 +179,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <div className={`font-headline italic text-2xl transition-colors ${isScrolled ? "text-primary" : "text-white"}`}>Madre</div>
+        <a href="#" className={`font-headline italic text-2xl transition-colors ${isScrolled ? "text-primary" : "text-white"}`}>Madre</a>
 
         <div className="hidden md:flex gap-8 items-center">
           {navItems.map((item) => (
@@ -199,7 +204,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
               {t("nav.reserve")}
             </button>
           )}
-          <button type="button" aria-label="Menu" className={`p-1 transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button type="button" aria-label="Menu" aria-expanded={mobileMenuOpen} className={`p-1 transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X /> : <MenuIcon />}
           </button>
         </div>
@@ -242,16 +247,25 @@ const Hero = () => {
   return (
     <section className="relative min-h-svh md:h-screen flex items-center overflow-hidden pt-28 pb-16 md:py-0">
       <div className="absolute inset-0 z-0">
+        {/* The photo is always there; on wider screens the video plays on top of it once it loads.
+            (Phones get only the photo: an empty <video> would show Safari's play button, and a
+            hidden one would still download its poster.) */}
+        <img
+          src="/images/hero.webp"
+          srcSet="/images/hero-sm.webp 800w, /images/hero.webp 1400w"
+          sizes="100vw"
+          alt=""
+          fetchPriority="high"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         <video
-          className="w-full h-full object-cover"
+          className="absolute inset-0 hidden md:block w-full h-full object-cover"
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          poster="/images/hero.webp"
         >
-          {/* Wider screens only. Phones match no source, so they download nothing and show the poster photo. */}
           <source src="/videos/hero.mp4" type="video/mp4" media="(min-width: 768px)" />
         </video>
         <div className="absolute inset-0 bg-black/35"></div>
@@ -272,11 +286,11 @@ const Hero = () => {
             {t("hero.body")}
           </p>
           <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
-            <a href="#menu" className="text-center bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
+            <Link to="/rezervacija" className="text-center bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
+              {t("nav.reserve")}
+            </Link>
+            <a href="#menu" className="text-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">
               {t("hero.viewMenu")}
-            </a>
-            <a href="#about" className="text-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">
-              {t("hero.ourStory")}
             </a>
           </div>
         </motion.div>
@@ -289,7 +303,7 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <section id="about" className="py-20 md:py-32 bg-surface">
-      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
+      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
         <div className="relative">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -301,6 +315,10 @@ const About = () => {
               alt="Madre bistro"
               className="w-full h-full object-cover"
               src="/images/about-main.webp"
+              srcSet="/images/about-main-sm.webp 640w, /images/about-main.webp 750w"
+              sizes="(min-width: 768px) 50vw, 100vw"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
           <motion.div
@@ -314,6 +332,8 @@ const About = () => {
               alt="Priprema jela"
               className="w-full h-full object-cover"
               src="/images/about-inset.webp"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
         </div>
@@ -432,6 +452,10 @@ const Menu = () => {
                 alt={t("menu.dish1Name")}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 src="/images/njoki-tartuf.webp"
+                srcSet="/images/njoki-tartuf-sm.webp 640w, /images/njoki-tartuf.webp 750w"
+                sizes="(min-width: 768px) 58vw, 100vw"
+              loading="lazy"
+              decoding="async"
               />
             </div>
             <div className="p-8">
@@ -456,6 +480,8 @@ const Menu = () => {
                   alt={t("menu.dish2Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   src="/images/linguine-buca-panceta.webp"
+              loading="lazy"
+              decoding="async"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center">
@@ -477,6 +503,8 @@ const Menu = () => {
                   alt={t("menu.dish3Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   src="/images/ravioli-ricotta-pistacio.webp"
+              loading="lazy"
+              decoding="async"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center text-right">
@@ -614,6 +642,9 @@ const Contact = () => {
                   <a href="tel:+385953545315" className="text-on-surface-variant hover:text-primary transition-colors">+385 95 35 45 315</a>
                   <a href="mailto:madre.split@gmail.com" className="text-on-surface-variant hover:text-primary transition-colors">madre.split@gmail.com</a>
                 </div>
+                <Link to="/rezervacija" className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+                  {t("contact.reserveOnline")} <ArrowRight size={16} />
+                </Link>
               </div>
 
               <div className="space-y-4 md:col-span-2">
@@ -639,7 +670,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="h-[500px] w-full bg-surface-container rounded-2xl overflow-hidden shadow-2xl relative flex flex-col">
+          <div className="h-80 md:h-[500px] w-full bg-surface-container rounded-2xl overflow-hidden shadow-2xl relative flex flex-col">
             <iframe
               title={t("contact.mapTitle")}
               className="w-full flex-1 border-0"

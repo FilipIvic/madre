@@ -7,11 +7,7 @@
         if (localStorage.getItem("madre-theme") === "dark") document.documentElement.classList.add("dark");
       } catch (e) {}
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-D57XWMHTN6"
-    ></script>
+    <!-- Google tag (gtag.js) — loaded after the page (see bottom of this script) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -36,6 +32,15 @@
       } catch (e) {}
 
       gtag("config", "G-D57XWMHTN6");
+
+      // Commands above are queued in dataLayer; the tag itself loads once the page has finished
+      // loading so it doesn't compete with the page on slow phones.
+      window.addEventListener("load", function () {
+        var tag = document.createElement("script");
+        tag.async = true;
+        tag.src = "https://www.googletagmanager.com/gtag/js?id=G-D57XWMHTN6";
+        document.head.appendChild(tag);
+      });
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,20 +64,27 @@
     <meta name="geo.position" content="43.5064;16.44435" />
     <meta name="ICBM" content="43.5064, 16.44435" />
 
-    <!-- Favicon -->
-    <!-- Fonts: linked here (not @import in CSS) so the browser finds them straight away. -->
+    <!-- Fonts load without blocking the first paint: text shows in a system font for a moment, then swaps. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;700&display=swap"
+      />
+    </noscript>
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <link rel="apple-touch-icon" href="/images/favicon.png" />
     <meta name="theme-color" content="#9a4025" />
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-    <meta property="og:type" content="restaurant" />
+    <meta property="og:type" content="website" />
     <meta property="og:url" content="https://madrebistro.netlify.app" />
     <meta
       property="og:title"
@@ -84,11 +96,13 @@
     />
     <meta
       property="og:image"
-      content="https://madrebistro.netlify.app/images/hero.jpg"
+      content="https://madrebistro.netlify.app/images/og-image.jpg"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Domaća pasta u Madre Bistrou, Split"
+      content="Njoki tartuf — domaća pasta u Madre Bistrou, Split"
     />
     <meta property="og:locale" content="hr_HR" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -106,7 +120,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://madrebistro.netlify.app/images/hero.jpg"
+      content="https://madrebistro.netlify.app/images/og-image.jpg"
     />
 
     <!-- Structured data (Google rich results) -->
@@ -133,7 +147,7 @@
         "keywords": "pasta Split, domaća pasta Split, domaća tjestenina Split, ručno rađena tjestenina, manistra Split, njoki Split, dnevna jela Split, dnevni meni Split, ručak Split, restoran Split, homemade pasta Split",
         "priceRange": "€€",
         "currenciesAccepted": "EUR",
-        "acceptsReservations": "True",
+        "acceptsReservations": "https://madrebistro.netlify.app/rezervacija",
         "areaServed": {
           "@type": "City",
           "name": "Split"

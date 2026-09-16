@@ -38,8 +38,9 @@ export default function TermsOfService() {
           <section className="space-y-4">
             <h2 className="font-headline text-2xl text-on-surface">3. Rezervacije</h2>
             <p>
-              Rezervacija putem telefona ili emaila smatra se potvrđenom tek kada dobijete potvrdu od naše strane.
-              Molimo vas da nas obavijestite najmanje [UNESI PERIOD] unaprijed u slučaju otkazivanja.
+              Rezervacija putem web stranice potvrđena je čim na email dobijete potvrdu. Rezervacija putem telefona ili
+              emaila smatra se potvrđenom tek kada dobijete potvrdu od naše strane.
+              Rezervaciju možete otkazati najkasnije do početka termina, putem linka u emailu s potvrdom ili telefonom.
             </p>
             <p>
               Zadržavamo pravo odbiti rezervaciju bez navođenja razloga.

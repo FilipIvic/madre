@@ -91,6 +91,7 @@ const hr = {
     addressLine1: "Ulica kralja Zvonimira 12",
     addressLine2: "21000 Split, Hrvatska",
     reservationsLabel: "Rezervacije",
+    reserveOnline: "Rezerviraj online",
     hoursLabel: "Radno vrijeme",
     tueSun: "Uto — Ned",
     dailyMenu: "Dnevna jela",

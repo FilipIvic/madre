@@ -91,6 +91,7 @@ const en = {
     addressLine1: "Ulica kralja Zvonimira 12",
     addressLine2: "21000 Split, Croatia",
     reservationsLabel: "Reservations",
+    reserveOnline: "Book online",
     hoursLabel: "Opening Hours",
     tueSun: "Tue — Sun",
     dailyMenu: "Daily specials",

@@ -25,4 +25,10 @@ i18n
     },
   });
 
+// Screen readers and search engines read the page language from <html lang>.
+document.documentElement.lang = i18n.resolvedLanguage ?? "hr";
+i18n.on("languageChanged", (lng) => {
+  document.documentElement.lang = lng.startsWith("en") ? "en" : "hr";
+});
+
 export default i18n;

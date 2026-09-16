@@ -53,7 +53,9 @@ export default function PrivacyPolicy() {
             <h2 className="font-headline text-2xl text-on-surface">4. Čuvanje podataka</h2>
             <p>
               Vaše osobne podatke čuvamo samo onoliko dugo koliko je potrebno za ispunjenje svrhe zbog koje su prikupljeni,
-              ili koliko zahtijeva zakon. Rezervacijski podaci se brišu nakon [UNESI PERIOD].
+              ili koliko zahtijeva zakon. Rezervacijski podaci se brišu nakon godinu dana.
+              Obrazac za rezervaciju pamti vaše ime, telefon i email samo u vašem pregledniku, kako ih sljedeći put
+              ne biste morali ponovno upisivati; te podatke možete ukloniti brisanjem podataka preglednika.
             </p>
           </section>
 

@@ -98,6 +98,14 @@ async function main() {
         });
       });
 
+      // Undo what ran in the browser so the saved HTML behaves like index.html: the font
+      // stylesheet goes back to non-blocking preload, and the analytics tag (added on load)
+      // is removed so it isn't loaded twice.
+      await page.evaluate(() => {
+        document.querySelectorAll('link[as="style"][rel="stylesheet"]').forEach((link) => (link.rel = "preload"));
+        document.querySelectorAll('script[src*="googletagmanager.com"], script[src*="google-analytics.com"]').forEach((s) => s.remove());
+      });
+
       const html = "<!doctype html>\n" + (await page.evaluate(() => document.documentElement.outerHTML));
       const outDir = route === "/" ? DIST : join(DIST, route);
       await mkdir(outDir, { recursive: true });
