@@ -177,9 +177,9 @@ const ReservationForm = () => {
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
-      {/* Date + party size */}
-      <div className="grid grid-cols-2 gap-3">
-        <div>
+      {/* Date + party size — stacked on phones: iOS Safari's native date field won't shrink to half the width. */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="min-w-0">
           <label className={labelClass} htmlFor="res-date">
             {t("reserve.dateLabel")}
           </label>
@@ -191,7 +191,7 @@ const ReservationForm = () => {
             min={isoDate()}
             max={isoDate(MAX_DAYS_AHEAD)}
             onChange={(e) => setDate(e.target.value)}
-            className={fieldClass}
+            className={`${fieldClass} block min-w-0`}
           />
         </div>
 
