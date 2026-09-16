@@ -21,7 +21,7 @@ export const SLOT_MINUTES = 30;
 export const DURATION_MINUTES = 90;
 
 /** Total guests that may be seated in any overlapping window. */
-export const SEATS_PER_SLOT = Number(process.env.SEATS_PER_SLOT ?? 30);
+export const SEATS_PER_SLOT = Number(process.env.SEATS_PER_SLOT || 30);
 
 /** Party sizes above this must call — the form says so. */
 export const MAX_PARTY_SIZE = 12;

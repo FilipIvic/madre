@@ -52,7 +52,7 @@ async function send(to: string, subject: string, html: string): Promise<void> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM ?? `${RESTAURANT.name} <onboarding@resend.dev>`,
+      from: process.env.RESEND_FROM || `${RESTAURANT.name} <onboarding@resend.dev>`,
       to: [to],
       subject,
       html,
@@ -108,7 +108,7 @@ export async function sendGuestConfirmation(r: ReservationInput): Promise<void> 
 }
 
 export async function sendOwnerNotification(r: ReservationInput): Promise<void> {
-  const to = process.env.OWNER_EMAIL ?? RESTAURANT.email;
+  const to = process.env.OWNER_EMAIL || RESTAURANT.email;
   const inner = `
     <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">Nova rezervacija preko web stranice.</p>
     <table style="border-collapse:collapse;">
