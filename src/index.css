@@ -15,6 +15,23 @@
   --color-on-surface: #1f1b14;
   --color-on-surface-variant: #56423d;
   --color-tertiary: #7b542b;
+  --color-card: #ffffff;
+}
+
+/* Dark mode: the moon button in the navbar adds .dark to <html>. Same tokens, darker values. */
+.dark {
+  color-scheme: dark;
+  --color-primary: #d4744f;
+  --color-primary-foreground: #1a120d;
+  --color-secondary: #b3b89d;
+  --color-surface: #18130f;
+  --color-surface-container: #261e18;
+  --color-surface-container-low: #1e1813;
+  --color-surface-container-high: #30271f;
+  --color-on-surface: #f2e8de;
+  --color-on-surface-variant: #cbbab0;
+  --color-tertiary: #d9a877;
+  --color-card: #231c17;
 }
 
 @layer base {

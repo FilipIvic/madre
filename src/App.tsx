@@ -12,6 +12,8 @@ import {
   ArrowRight,
   Instagram,
   Menu as MenuIcon,
+  Moon,
+  Sun,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -48,6 +50,32 @@ const LanguageSwitcher = ({ light = false }: { light?: boolean }) => {
   );
 };
 
+const ThemeToggle = ({ light = false }: { light?: boolean }) => {
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
+
+  const toggle = () => {
+    const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("madre-theme", next ? "dark" : "light");
+    } catch {
+      // Storage blocked — the theme still switches for this visit.
+    }
+    setDark(next);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={dark ? "Light mode" : "Dark mode"}
+      className={`p-1.5 rounded-full transition-colors ${light ? "text-white/90 hover:text-white" : "text-secondary hover:text-primary"}`}
+    >
+      {dark ? <Sun size={18} /> : <Moon size={18} />}
+    </button>
+  );
+};
+
 // --- Reservation Modal ---
 
 const ReservationModal = ({ onClose }: { onClose: () => void }) => {
@@ -64,7 +92,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:px-4"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -77,17 +105,18 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 
       {/* Card */}
       <motion.div
-        className="relative bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto"
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        className="relative bg-surface rounded-t-3xl sm:rounded-2xl shadow-2xl px-6 pt-8 pb-0 sm:p-8 w-full max-w-lg max-h-[92svh] sm:max-h-[90vh] overflow-y-auto overscroll-contain"
+        initial={{ opacity: 0, scale: 0.96, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        exit={{ opacity: 0, scale: 0.96, y: 40 }}
         transition={{ type: "spring", duration: 0.4 }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-secondary hover:text-primary transition-colors"
+          aria-label="Close"
+          className="absolute top-3 right-3 p-2 text-secondary hover:text-primary transition-colors"
         >
           <X size={20} />
         </button>
@@ -99,7 +128,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 
         <ReservationForm />
 
-        <p className="font-body text-xs text-secondary text-center mt-6 opacity-70">
+        <p className="font-body text-xs text-secondary text-center mt-4 sm:mt-6 pb-6 sm:pb-0 opacity-70">
           {t("modal.hours")}
         </p>
       </motion.div>
@@ -158,14 +187,22 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
             </a>
           ))}
           <LanguageSwitcher light={!isScrolled} />
+          <ThemeToggle light={!isScrolled} />
           <button type="button" onClick={onReserve} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-bold text-sm tracking-wide hover:opacity-90 transition-opacity active:scale-95">
             {t("nav.reserve")}
           </button>
         </div>
 
-        <button type="button" className={`md:hidden transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X /> : <MenuIcon />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          {!mobileMenuOpen && (
+            <button type="button" onClick={onReserve} className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-bold text-sm active:scale-95 transition-transform">
+              {t("nav.reserve")}
+            </button>
+          )}
+          <button type="button" aria-label="Menu" className={`p-1 transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -185,7 +222,10 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
               {item.label}
             </a>
           ))}
-          <LanguageSwitcher />
+          <div className="flex items-center justify-between">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
           <button type="button" onClick={() => { setMobileMenuOpen(false); onReserve(); }} className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-bold text-lg">
             {t("nav.reserve")}
           </button>
@@ -200,7 +240,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
 const Hero = () => {
   const { t } = useTranslation();
   return (
-    <section className="relative h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-svh md:h-screen flex items-center overflow-hidden pt-28 pb-16 md:py-0">
       <div className="absolute inset-0 z-0">
         <video
           className="w-full h-full object-cover"
@@ -222,20 +262,20 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="max-w-2xl"
         >
-          <span className="inline-block font-body text-white bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6">
+          <span className="inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6">
             {t("hero.badge")}
           </span>
-          <h1 className="font-headline text-6xl md:text-8xl text-white mb-6 leading-tight tracking-tight">
+          <h1 className="font-headline text-5xl sm:text-6xl md:text-8xl text-white mb-6 leading-tight tracking-tight">
             {t("hero.headline")}
           </h1>
           <p className="text-white/90 text-lg md:text-xl font-body max-w-lg mb-10 leading-relaxed">
             {t("hero.body")}
           </p>
-          <div className="flex flex-wrap gap-4">
-            <a href="#menu" className="bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
+            <a href="#menu" className="text-center bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
               {t("hero.viewMenu")}
             </a>
-            <a href="#about" className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">
+            <a href="#about" className="text-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">
               {t("hero.ourStory")}
             </a>
           </div>
@@ -248,7 +288,7 @@ const Hero = () => {
 const About = () => {
   const { t } = useTranslation();
   return (
-    <section id="about" className="py-32 bg-surface">
+    <section id="about" className="py-20 md:py-32 bg-surface">
       <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
         <div className="relative">
           <motion.div
@@ -325,7 +365,7 @@ const DailySpecials = () => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="md:col-span-12 bg-white rounded-xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 group"
+      className="md:col-span-12 bg-card rounded-xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 group"
     >
       <div className="md:col-span-5 h-72 md:h-auto overflow-hidden">
         <img
@@ -336,7 +376,7 @@ const DailySpecials = () => {
         />
       </div>
       <div className="md:col-span-7 p-8 md:p-10">
-        <span className="inline-block font-body text-white bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-4">
+        <span className="inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-4">
           {t("menu.dailyBadge")}
         </span>
         <h3 className="font-headline text-3xl text-primary mb-2">{t("menu.dailyHeadline")}</h3>
@@ -372,7 +412,7 @@ const DailySpecials = () => {
 const Menu = () => {
   const { t } = useTranslation();
   return (
-    <section id="menu" className="py-32 bg-surface-container-low">
+    <section id="menu" className="py-20 md:py-32 bg-surface-container-low">
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-20">
           <h2 className="font-headline text-5xl mb-4">{t("menu.headline")}</h2>
@@ -385,7 +425,7 @@ const Menu = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="md:col-span-7 bg-white rounded-xl overflow-hidden shadow-sm group"
+            className="md:col-span-7 bg-card rounded-xl overflow-hidden shadow-sm group"
           >
             <div className="h-[400px] overflow-hidden">
               <img
@@ -409,7 +449,7 @@ const Menu = () => {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl overflow-hidden shadow-sm flex group h-full"
+              className="bg-card rounded-xl overflow-hidden shadow-sm flex group h-full"
             >
               <div className="w-1/3 overflow-hidden">
                 <img
@@ -430,7 +470,7 @@ const Menu = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl overflow-hidden shadow-sm flex flex-row-reverse group h-full"
+              className="bg-card rounded-xl overflow-hidden shadow-sm flex flex-row-reverse group h-full"
             >
               <div className="w-1/3 overflow-hidden">
                 <img
@@ -510,7 +550,7 @@ const Gallery = () => {
   ];
 
   return (
-    <section id="gallery" className="py-32 bg-surface">
+    <section id="gallery" className="py-20 md:py-32 bg-surface">
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-20">
           <h2 className="font-headline text-5xl mb-4">{t("gallery.headline")}</h2>
@@ -544,7 +584,7 @@ const Gallery = () => {
 const Contact = () => {
   const { t } = useTranslation();
   return (
-    <section id="contact" className="py-32 bg-surface overflow-hidden">
+    <section id="contact" className="py-20 md:py-32 bg-surface overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="space-y-12">
@@ -607,7 +647,7 @@ const Contact = () => {
               allowFullScreen
               loading="lazy"
             />
-            <div className="bg-white px-6 py-4 flex items-center justify-between">
+            <div className="bg-card px-6 py-4 flex items-center justify-between">
               <div>
                 <p className="font-headline text-sm text-primary">Ul. kralja Zvonimira 12</p>
                 <p className="text-xs text-on-surface-variant">{t("contact.addressLine2")}</p>

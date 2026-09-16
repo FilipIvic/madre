@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="hr">
   <head>
+    <script>
+      try {
+        if (localStorage.getItem("madre-theme") === "dark") document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
     <!-- Google tag (gtag.js) -->
     <script
       async

@@ -278,7 +278,7 @@ const ReservationForm = () => {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelClass} htmlFor="res-phone">
               {t("reserve.phoneLabel")}
@@ -342,14 +342,17 @@ const ReservationForm = () => {
         <p className="rounded-xl bg-primary/10 px-4 py-3 font-body text-sm text-primary">{error}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={!canSubmit}
-        className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-body font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {submitting && <Loader2 size={18} className="animate-spin" />}
-        {submitting ? t("reserve.submitting") : t("reserve.submit")}
-      </button>
+      {/* On phones the button stays pinned to the bottom of the sheet while the guest scrolls. */}
+      <div className="sticky bottom-0 z-10 -mx-6 px-6 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] bg-surface shadow-[0_-12px_16px_-12px_rgba(0,0,0,0.12)] sm:static sm:z-auto sm:m-0 sm:p-0 sm:bg-transparent sm:shadow-none">
+        <button
+          type="submit"
+          disabled={!canSubmit}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-body font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {submitting && <Loader2 size={18} className="animate-spin" />}
+          {submitting ? t("reserve.submitting") : t("reserve.submit")}
+        </button>
+      </div>
 
       <p className="text-center font-body text-xs text-secondary opacity-80">
         {t("reserve.largePartyNote", { max: MAX_PARTY_SIZE })}{" "}
