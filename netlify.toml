@@ -4,6 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # Public addresses shown on the site itself (footer, legal pages, structured
+  # data), so the secrets scanner must not treat them as secrets.
+  SECRETS_SCAN_OMIT_KEYS = "OWNER_EMAIL,RESEND_FROM"
 
 [functions]
   directory = "netlify/functions"
