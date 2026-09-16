@@ -22,6 +22,7 @@
     "i18next-browser-languagedetector": "^8.2.1",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "nodemailer": "^10.0.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^17.0.1",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/nodemailer": "^8.0.2",
     "esbuild": "^0.28.2",
     "puppeteer": "^25.1.0",
     "tailwindcss": "^4.1.14",

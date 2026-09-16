@@ -1,15 +1,15 @@
 /**
- * Confirmation emails via Resend (free tier covers a bistro many times over).
+ * Confirmation emails, sent from the restaurant's Gmail (RESTAURANT.email) over SMTP.
+ * Gmail allows ~500 emails a day, far more than a bistro needs.
  *
- * Email is deliberately optional: with no RESEND_API_KEY set, reservations
+ * Email is deliberately optional: with no GMAIL_APP_PASSWORD set, reservations
  * still work and this quietly does nothing. Set it up whenever you like.
  */
 
+import nodemailer from "nodemailer";
 import { RESTAURANT } from "./config.js";
 import { formatDateHr } from "./time.js";
 import type { ReservationInput } from "./validate.js";
-
-const ENDPOINT = "https://api.resend.com/emails";
 
 const COPY = {
   hr: {
@@ -38,30 +38,34 @@ const COPY = {
   },
 };
 
-async function send(to: string, subject: string, html: string): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping email to", to);
+async function send(to: string, subject: string, html: string, replyTo?: string): Promise<void> {
+  // Google shows app passwords as "abcd efgh ijkl mnop" — accept it with or without spaces.
+  const password = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
+  if (!password) {
+    console.warn("GMAIL_APP_PASSWORD not set — skipping email to", to);
     return;
   }
 
-  const res = await fetch(ENDPOINT, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: process.env.RESEND_FROM || `${RESTAURANT.name} <onboarding@resend.dev>`,
-      to: [to],
-      subject,
-      html,
-    }),
+  const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: RESTAURANT.email, pass: password },
+    // Stay well inside the function's time limit if Gmail is slow to answer.
+    connectionTimeout: 8_000,
+    greetingTimeout: 8_000,
+    socketTimeout: 8_000,
   });
 
-  if (!res.ok) {
+  try {
+    await transport.sendMail({
+      from: { name: RESTAURANT.name, address: RESTAURANT.email },
+      to,
+      replyTo,
+      subject,
+      html,
+    });
+  } catch (error) {
     // A failed email must never fail a confirmed booking — log and move on.
-    console.error("Resend error:", res.status, (await res.text()).slice(0, 300));
+    console.error("Email to", to, "failed:", error instanceof Error ? error.message : error);
   }
 }
 
@@ -121,5 +125,6 @@ export async function sendOwnerNotification(r: ReservationInput): Promise<void> 
       ${r.notes ? row("Napomena", r.notes) : ""}
     </table>
   `;
-  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os. — ${formatDateHr(r.date)} u ${r.time}`, shell(inner));
+  // Reply goes straight to the guest.
+  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os. — ${formatDateHr(r.date)} u ${r.time}`, shell(inner), r.email);
 }

@@ -4,7 +4,7 @@ One-time setup, ~20 minutes. Google Calendar is the database; there is nothing e
 
 ```
 Guest fills the form  →  Netlify Function  →  Google Calendar (the database)
-                                           →  Resend (confirmation emails)
+                                           →  Gmail (confirmation emails)
 ```
 
 ---
@@ -78,12 +78,15 @@ Redeploy after adding variables — Netlify only injects them at build/runtime s
 
 Reservations work without this; guests just see the success screen instead of getting an email.
 
-1. Sign up at [resend.com](https://resend.com) — free tier is 3,000 emails/month
-2. **API Keys → Create API Key**, copy it
-3. Add to Netlify: `RESEND_API_KEY` = that key
-4. Add `OWNER_EMAIL` = where new-booking alerts should go (defaults to `madre.split@gmail.com`)
+Emails are sent from the restaurant's own Gmail, `madre.split@gmail.com` — guests get their confirmation from it, and a copy of each new booking lands in the same inbox. Gmail allows about 500 emails a day.
 
-Out of the box this sends from Resend's `onboarding@resend.dev`, which works immediately but can land in spam. To send from your own domain, verify it in Resend (**Domains → Add domain**, add the DNS records) and then set `RESEND_FROM` to e.g. `Madre Bistro <rezervacije@madre-bistro.hr>`.
+1. Sign in to `madre.split@gmail.com` and open [myaccount.google.com/security](https://myaccount.google.com/security)
+2. Turn on **2-Step Verification** if it isn't already (Google requires it for app passwords)
+3. Open [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords), name it `Madre web`, **Create**, and copy the 16-letter password
+4. Add to Netlify: `GMAIL_APP_PASSWORD` = that password (spaces or not, both work)
+5. Optional: `OWNER_EMAIL` = where new-booking alerts should go instead (defaults to `madre.split@gmail.com`)
+
+Hitting **Reply** on a new-booking alert writes straight to the guest. The app password only works for sending mail; changing the Google account password revokes it, so create a new one if that ever happens.
 
 ---
 
@@ -137,4 +140,4 @@ Netlify → **Logs → Functions** shows every call and any error.
 | `Google Calendar 403` | Calendar not shared with the service account, or shared with the wrong permission (needs **Make changes to events**) |
 | `invalid_grant` / `error:1E08010C` | `GOOGLE_PRIVATE_KEY` got mangled — re-paste it from the JSON, keeping the literal `\n` |
 | Times shown are off by an hour | Calendar time zone isn't Zagreb (step 1) |
-| No emails | `RESEND_API_KEY` missing — bookings still save; check the function log |
+| No emails | `GMAIL_APP_PASSWORD` missing or revoked — bookings still save; check the function log for `Email to ... failed` |

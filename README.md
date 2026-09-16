@@ -122,7 +122,7 @@ ahead people can book — live in one file: `netlify/lib/config.ts`.
 │       ├── rules.ts          # Slot generation & capacity math
 │       ├── time.ts           # Europe/Zagreb ↔ UTC conversion
 │       ├── validate.ts       # Request validation
-│       ├── email.ts          # Confirmation emails (Resend)
+│       ├── email.ts          # Confirmation emails (Gmail SMTP)
 │       └── rules.test.ts     # Logic tests — npm test
 ├── public/
 │   └── images/          # Your restaurant photos go here
