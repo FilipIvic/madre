@@ -251,17 +251,15 @@ const Hero = () => {
           preload="auto"
           poster="/images/hero.webp"
         >
-          {/* Phones get a lighter 960p cut; wider screens the full 720p. */}
+          {/* Wider screens only. Phones match no source, so they download nothing and show the poster photo. */}
           <source src="/videos/hero.mp4" type="video/mp4" media="(min-width: 768px)" />
-          <source src="/videos/hero-mobile.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/35"></div>
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          // No entrance animation here: this text is the page's largest paint, and fading it
+          // in from opacity 0 made Google measure it only after JavaScript loaded.
           className="max-w-2xl"
         >
           <span className="inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6">
