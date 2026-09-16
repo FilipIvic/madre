@@ -13,9 +13,9 @@ import {
   Instagram,
   Menu as MenuIcon,
   X,
-  Mail,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import ReservationForm from "./ReservationForm";
 import { useTranslation } from "react-i18next";
 
 // --- Language Switcher ---
@@ -52,10 +52,6 @@ const LanguageSwitcher = ({ light = false }: { light?: boolean }) => {
 
 const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
-  const phone = "+385953545315";
-  const email = "madre.split@gmail.com";
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(t("modal.emailSubject"))}`;
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -81,7 +77,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 
       {/* Card */}
       <motion.div
-        className="relative bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-sm"
+        className="relative bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto"
         initial={{ opacity: 0, scale: 0.92, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -97,35 +93,11 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
         </button>
 
         <h2 className="font-headline text-2xl text-primary mb-2">{t("modal.headline")}</h2>
-        <p className="font-body text-sm text-on-surface-variant mb-8">
+        <p className="font-body text-sm text-on-surface-variant mb-6">
           {t("modal.body")}
         </p>
 
-        <div className="flex flex-col gap-4">
-          <a
-            href={`tel:${phone}`}
-            className="flex items-center gap-4 bg-primary text-primary-foreground px-6 py-4 rounded-xl font-bold hover:opacity-90 transition-opacity"
-          >
-            <Phone size={20} />
-            <div>
-              <div className="text-sm uppercase tracking-widest opacity-80 font-body font-normal">{t("modal.callLabel")}</div>
-              <div className="font-headline">+385 95 35 45 315</div>
-            </div>
-          </a>
-
-          <a
-            href={gmailUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 bg-surface-container border border-surface-container-high px-6 py-4 rounded-xl font-bold hover:bg-surface-container-high transition-colors text-on-surface"
-          >
-            <Mail size={20} className="text-primary" />
-            <div>
-              <div className="text-sm uppercase tracking-widest opacity-60 font-body font-normal">{t("modal.emailLabel")}</div>
-              <div className="font-headline">{email}</div>
-            </div>
-          </a>
-        </div>
+        <ReservationForm />
 
         <p className="font-body text-xs text-secondary text-center mt-6 opacity-70">
           {t("modal.hours")}

@@ -5,6 +5,17 @@
 [build.environment]
   NODE_VERSION = "22"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Reservation API. Must come BEFORE the SPA fallback below — Netlify applies
+# the first matching rule, so without this /api/* would render index.html.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
 # SPA fallback so client-side routes (e.g. /politika-privatnosti) resolve
 # on direct load and refresh instead of 404.
 [[redirects]]

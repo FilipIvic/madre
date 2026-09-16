@@ -8,3 +8,6 @@ coverage/
 !.env.example
 .claude/
 photos-raw/
+
+# Local Netlify folder
+.netlify
