@@ -1,4 +1,5 @@
-import { zagrebToUtc, weekdayOf, addMinutes, nextDay, daysBetween, formatDateHr } from "./time.js";
+import { zagrebToUtc, zagrebDateTime, weekdayOf, addMinutes, nextDay, daysBetween, formatDateHr } from "./time.js";
+import { cancelToken, isValidCancelToken, icsFile, googleCalendarUrl, cancelUrl } from "./links.js";
 import { slotsForDate, remainingSeats, availability, isTooLate } from "./rules.js";
 import type { CalendarEvent } from "./calendar.js";
 
@@ -121,6 +122,29 @@ const slots = availability("2026-09-16", [booking("19:30", "21:00", 6)], now);
 eq("availability hides past slots", slots[0].time, "19:30");
 eq("availability marks taken slot", slots[0].remaining, 0);
 eq("availability keeps next slot open", slots[1].remaining, 12);
+
+// --- cancel links & calendar files ----------------------------------------
+process.env.GOOGLE_PRIVATE_KEY = "test-key";
+const token = cancelToken("abc123def");
+eq("valid cancel token accepted", isValidCancelToken("abc123def", token), true);
+eq("token for another event rejected", isValidCancelToken("abc123dee", token), false);
+eq("tampered token rejected", isValidCancelToken("abc123def", token.slice(0, -1) + "x"), false);
+eq("empty token rejected", isValidCancelToken("abc123def", ""), false);
+process.env.GOOGLE_PRIVATE_KEY = "rotated-key";
+eq("token dies when the key changes", isValidCancelToken("abc123def", token), false);
+eq("cancel url shape", cancelUrl("https://x.test", "abc123def", "en").startsWith("https://x.test/otkazivanje?id=abc123def&t="), true);
+
+eq("zagrebDateTime summer", zagrebDateTime("2026-07-15T17:00:00.000Z"), { date: "2026-07-15", time: "19:00" });
+eq("zagrebDateTime across midnight", zagrebDateTime("2026-01-15T23:30:00Z"), { date: "2026-01-16", time: "00:30" });
+eq("zagrebDateTime from Google offset", zagrebDateTime("2026-09-16T12:30:00+02:00"), { date: "2026-09-16", time: "12:30" });
+
+const entry = { eventId: "abc123def", date: "2026-09-16", time: "12:30", title: "Madre; test, 4", details: "line1\nline2" };
+const ics = icsFile(entry);
+eq("ics start in UTC", ics.includes("DTSTART:20260916T103000Z"), true);
+eq("ics end +60min", ics.includes("DTEND:20260916T113000Z"), true);
+eq("ics escapes ; , and newlines", ics.includes("SUMMARY:Madre\\; test\\, 4") && ics.includes("DESCRIPTION:line1\\nline2"), true);
+eq("ics uses CRLF", ics.includes("\r\n"), true);
+eq("google link dates", new URL(googleCalendarUrl(entry)).searchParams.get("dates"), "20260916T103000Z/20260916T113000Z");
 
 console.log(failed === 0 ? "\nALL PASSED" : `\n${failed} FAILED`);
 process.exit(failed === 0 ? 0 : 1);

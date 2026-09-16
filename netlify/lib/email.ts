@@ -6,8 +6,9 @@
  * still work and this quietly does nothing. Set it up whenever you like.
  */
 
-import nodemailer from "nodemailer";
+import nodemailer, { type SendMailOptions } from "nodemailer";
 import { RESTAURANT } from "./config.js";
+import { googleCalendarUrl, icsFile } from "./links.js";
 import { formatDateHr } from "./time.js";
 import type { ReservationInput } from "./validate.js";
 
@@ -20,9 +21,13 @@ const COPY = {
     time: "Vrijeme",
     guests: "Broj gostiju",
     notes: "Napomena",
-    changeIntro: "Trebaš promijeniti ili otkazati?",
+    changeIntro: "Trebaš nešto promijeniti?",
     changeBody: `Nazovi nas na ${RESTAURANT.phoneDisplay} i sredit ćemo.`,
     holdNote: "Stol držimo 15 minuta od dogovorenog termina.",
+    addToCalendar: "Dodaj u Google kalendar",
+    icsNote: "Za Apple ili Outlook kalendar otvori privitak rezervacija.ics.",
+    cancel: "Otkaži rezervaciju",
+    calendarTitle: (guests: number) => `${RESTAURANT.name} — rezervacija (${guests} os.)`,
   },
   en: {
     subject: `Reservation confirmed — ${RESTAURANT.name}`,
@@ -32,13 +37,19 @@ const COPY = {
     time: "Time",
     guests: "Guests",
     notes: "Note",
-    changeIntro: "Need to change or cancel?",
+    changeIntro: "Need to change something?",
     changeBody: `Give us a call at ${RESTAURANT.phoneDisplay} and we'll sort it out.`,
     holdNote: "We hold your table for 15 minutes past the booked time.",
+    addToCalendar: "Add to Google Calendar",
+    icsNote: "For Apple or Outlook calendar, open the attached rezervacija.ics.",
+    cancel: "Cancel reservation",
+    calendarTitle: (guests: number) => `${RESTAURANT.name} — reservation (${guests} guests)`,
   },
 };
 
-async function send(to: string, subject: string, html: string, replyTo?: string): Promise<void> {
+type SendOptions = Pick<SendMailOptions, "replyTo" | "attachments">;
+
+async function send(to: string, subject: string, html: string, { replyTo, attachments }: SendOptions = {}): Promise<void> {
   // Google shows app passwords as "abcd efgh ijkl mnop" — accept it with or without spaces.
   const password = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
   if (!password) {
@@ -62,6 +73,7 @@ async function send(to: string, subject: string, html: string, replyTo?: string)
       replyTo,
       subject,
       html,
+      attachments,
     });
   } catch (error) {
     // A failed email must never fail a confirmed booking — log and move on.
@@ -82,6 +94,11 @@ function row(label: string, value: string): string {
   </tr>`;
 }
 
+function button(href: string, label: string, primary: boolean): string {
+  const colors = primary ? "background:#9a4025;color:#ffffff;" : "background:#f6ede4;color:#9a4025;";
+  return `<a href="${escapeHtml(href)}" style="${colors}display:inline-block;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;margin:0 8px 8px 0;">${escapeHtml(label)}</a>`;
+}
+
 function shell(inner: string): string {
   return `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#fff8f3;padding:32px;">
     <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;">
@@ -94,8 +111,18 @@ function shell(inner: string): string {
   </div>`;
 }
 
-export async function sendGuestConfirmation(r: ReservationInput): Promise<void> {
+export async function sendGuestConfirmation(
+  r: ReservationInput,
+  links: { eventId: string; cancelUrl: string },
+): Promise<void> {
   const t = COPY[r.lang];
+  const entry = {
+    eventId: links.eventId,
+    date: r.date,
+    time: r.time,
+    title: t.calendarTitle(r.guests),
+    details: `${t.guests}: ${r.guests}\n${RESTAURANT.phoneDisplay}\n\n${t.cancel}: ${links.cancelUrl}`,
+  };
   const inner = `
     <p style="color:#1f1b14;font-size:15px;margin:0 0 4px;">${escapeHtml(t.greeting(r.name))}</p>
     <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">${t.confirmed}</p>
@@ -105,10 +132,19 @@ export async function sendGuestConfirmation(r: ReservationInput): Promise<void> 
       ${row(t.guests, String(r.guests))}
       ${r.notes ? row(t.notes, r.notes) : ""}
     </table>
+    <div style="margin-bottom:4px;">
+      ${button(googleCalendarUrl(entry), t.addToCalendar, true)}
+    </div>
+    <p style="color:#56423d;font-size:12px;margin:0 0 24px;">${t.icsNote}</p>
     <p style="color:#56423d;font-size:13px;margin:0 0 4px;">${t.holdNote}</p>
-    <p style="color:#56423d;font-size:13px;margin:0;"><strong>${t.changeIntro}</strong> ${escapeHtml(t.changeBody)}</p>
+    <p style="color:#56423d;font-size:13px;margin:0 0 16px;"><strong>${t.changeIntro}</strong> ${escapeHtml(t.changeBody)}</p>
+    ${button(links.cancelUrl, t.cancel, false)}
   `;
-  await send(r.email, t.subject, shell(inner));
+  await send(r.email, t.subject, shell(inner), {
+    attachments: [
+      { filename: "rezervacija.ics", content: icsFile(entry), contentType: "text/calendar; charset=utf-8; method=PUBLISH" },
+    ],
+  });
 }
 
 export async function sendOwnerNotification(r: ReservationInput): Promise<void> {
@@ -126,5 +162,27 @@ export async function sendOwnerNotification(r: ReservationInput): Promise<void> 
     </table>
   `;
   // Reply goes straight to the guest.
-  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os. — ${formatDateHr(r.date)} u ${r.time}`, shell(inner), r.email);
+  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os. — ${formatDateHr(r.date)} u ${r.time}`, shell(inner), {
+    replyTo: r.email,
+  });
+}
+
+export type CancelledBooking = { date: string; time: string; guests: number; name: string; phone: string; email: string };
+
+export async function sendOwnerCancellation(b: CancelledBooking): Promise<void> {
+  const to = process.env.OWNER_EMAIL || RESTAURANT.email;
+  const inner = `
+    <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">Gost je otkazao rezervaciju preko linka iz emaila. Termin je ponovno slobodan i obrisan je iz kalendara.</p>
+    <table style="border-collapse:collapse;">
+      ${row("Datum", formatDateHr(b.date))}
+      ${row("Vrijeme", b.time)}
+      ${row("Gostiju", String(b.guests))}
+      ${row("Ime", b.name)}
+      ${row("Telefon", b.phone)}
+      ${row("Email", b.email)}
+    </table>
+  `;
+  await send(to, `Otkazano: ${b.name}, ${b.guests} os. — ${formatDateHr(b.date)} u ${b.time}`, shell(inner), {
+    replyTo: b.email || undefined,
+  });
 }

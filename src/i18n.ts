@@ -15,7 +15,9 @@ i18n
     fallbackLng: "hr",
     supportedLngs: ["hr", "en"],
     detection: {
-      order: ["localStorage", "navigator"],
+      // ?lng=en comes from the cancel link, so the page matches the guest's email.
+      order: ["querystring", "localStorage", "navigator"],
+      lookupQuerystring: "lng",
       caches: ["localStorage"],
     },
     interpolation: {

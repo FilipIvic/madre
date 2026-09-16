@@ -45,6 +45,9 @@ export const BLOCK_KEYWORD = "ZATVORENO";
 /** Marks events this app created, so manual entries are never counted twice. */
 export const APP_TAG = "madre-reservations";
 
+/** Public site address for links in emails. Netlify's own URL variable wins when set (e.g. a custom domain). */
+export const SITE_URL = "https://madrebistro.netlify.app";
+
 export const RESTAURANT = {
   name: "Madre Bistro",
   phone: "+385953545315",

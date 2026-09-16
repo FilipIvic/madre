@@ -60,6 +60,19 @@ export function zagrebNowTime(): string {
   }).format(new Date());
 }
 
+/** A UTC instant (e.g. an event's start) as Zagreb wall-clock "YYYY-MM-DD" + "HH:MM". */
+export function zagrebDateTime(instant: string | Date): { date: string; time: string } {
+  const d = new Date(instant);
+  const date = new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(d);
+  const time = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(d);
+  return { date, time };
+}
+
 /** Day of week for a "YYYY-MM-DD" date. 0 = Sunday. */
 export function weekdayOf(dateStr: string): number {
   // Noon UTC is the same calendar day in Zagreb year-round (offset is +1 or +2).

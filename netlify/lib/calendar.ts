@@ -14,6 +14,7 @@ const API = "https://www.googleapis.com/calendar/v3";
 
 export type CalendarEvent = {
   id: string;
+  status?: string;
   summary?: string;
   start: { dateTime?: string; date?: string };
   end: { dateTime?: string; date?: string };
@@ -35,6 +36,15 @@ function auth(): JWT {
   return client;
 }
 
+export class CalendarError extends Error {
+  constructor(
+    readonly status: number,
+    body: string,
+  ) {
+    super(`Google Calendar ${status}: ${body.slice(0, 400)}`);
+  }
+}
+
 async function call(path: string, init: RequestInit = {}): Promise<any> {
   const { token } = await auth().getAccessToken();
   const res = await fetch(`${API}${path}`, {
@@ -46,11 +56,9 @@ async function call(path: string, init: RequestInit = {}): Promise<any> {
     },
   });
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Google Calendar ${res.status}: ${body.slice(0, 400)}`);
-  }
-  return res.json();
+  if (!res.ok) throw new CalendarError(res.status, await res.text());
+  // DELETE answers 204 with no body.
+  return res.status === 204 ? null : res.json();
 }
 
 function calendarId(): string {
@@ -86,6 +94,7 @@ export type NewReservation = {
   phone: string;
   email: string;
   notes: string;
+  lang: string;
 };
 
 /** Croatian plural, matching how bookings are written by hand: 1 osoba, 2–4 osobe, 5+ osoba. */
@@ -115,8 +124,10 @@ export async function createReservation(r: NewReservation): Promise<CalendarEven
       private: {
         app: APP_TAG,
         guests: String(r.guests),
+        name: r.name,
         email: r.email,
         phone: r.phone,
+        lang: r.lang,
       },
     },
   };
@@ -125,4 +136,19 @@ export async function createReservation(r: NewReservation): Promise<CalendarEven
     method: "POST",
     body: JSON.stringify(body),
   });
+}
+
+/** One event by id, or null if it doesn't exist or was already deleted. */
+export async function getEvent(eventId: string): Promise<CalendarEvent | null> {
+  try {
+    const event: CalendarEvent = await call(`/calendars/${calendarId()}/events/${encodeURIComponent(eventId)}`);
+    return event.status === "cancelled" ? null : event;
+  } catch (error) {
+    if (error instanceof CalendarError && (error.status === 404 || error.status === 410)) return null;
+    throw error;
+  }
+}
+
+export async function deleteEvent(eventId: string): Promise<void> {
+  await call(`/calendars/${calendarId()}/events/${encodeURIComponent(eventId)}`, { method: "DELETE" });
 }

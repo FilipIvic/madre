@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /otkazivanje
 
 Sitemap: https://madrebistro.netlify.app/sitemap.xml

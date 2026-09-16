@@ -6,14 +6,9 @@
 
 import { listDayEvents } from "../lib/calendar.js";
 import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, missingEnv } from "../lib/config.js";
+import { json } from "../lib/http.js";
 import { availability } from "../lib/rules.js";
 import { daysBetween, zagrebToday } from "../lib/time.js";
-
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-  });
 
 export default async (req: Request): Promise<Response> => {
   if (req.method !== "GET") return json({ code: "METHOD_NOT_ALLOWED" }, 405);

@@ -114,6 +114,8 @@ npm test                 # slot, capacity and timezone logic (no network, no sec
 
 **Phone bookings.** Add them to the same calendar the way you always have — `Rezervacija`, the number of guests, then the name: `Rezervacija 4 osobe - Josipa` (a title that just starts with the number, `6 Ana`, works too). The app counts those guests in the time slot the event starts in, so the website won't overbook on top of them. A title without a number (`dostava vina`) is treated as a note and takes no seats. Website bookings are written in the same format and last one hour.
 
+**What the guest gets.** The confirmation email has an **Add to Google Calendar** button, a `rezervacija.ics` attachment for Apple/Outlook, and a **Cancel reservation** link. Cancelling asks for one more click on the page, then deletes the event from the calendar and emails the restaurant `Otkazano: …`. Links only work for bookings made on the website, and stop working once the booking time has passed. The form also remembers the guest's name, phone and email in their own browser for next time.
+
 **Changing hours, capacity or how long a table is held.** All of it is in `netlify/lib/config.ts` — plain values with comments. Edit, commit, push; Netlify redeploys.
 
 ---

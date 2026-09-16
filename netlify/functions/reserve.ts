@@ -8,15 +8,11 @@
 import { createReservation, listDayEvents } from "../lib/calendar.js";
 import { APP_TAG, DURATION_MINUTES, missingEnv } from "../lib/config.js";
 import { sendGuestConfirmation, sendOwnerNotification } from "../lib/email.js";
+import { json } from "../lib/http.js";
+import { cancelUrl, siteUrl } from "../lib/links.js";
 import { isTooLate, remainingSeats } from "../lib/rules.js";
 import { addMinutes } from "../lib/time.js";
 import { validate } from "../lib/validate.js";
-
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-  });
 
 export default async (req: Request): Promise<Response> => {
   if (req.method !== "POST") return json({ code: "METHOD_NOT_ALLOWED" }, 405);
@@ -59,13 +55,14 @@ export default async (req: Request): Promise<Response> => {
       return json({ code: "SLOT_FULL" }, 409);
     }
 
-    await createReservation({
+    const event = await createReservation({
       ...r,
       endTime: addMinutes(r.time, DURATION_MINUTES),
     });
+    const links = { eventId: event.id, cancelUrl: cancelUrl(siteUrl(req), event.id, r.lang) };
 
     // A bounced email must not turn a confirmed booking into an error.
-    await Promise.allSettled([sendGuestConfirmation(r), sendOwnerNotification(r)]);
+    await Promise.allSettled([sendGuestConfirmation(r, links), sendOwnerNotification(r)]);
 
     return json({ ok: true, date: r.date, time: r.time, guests: r.guests }, 201);
   } catch (error) {

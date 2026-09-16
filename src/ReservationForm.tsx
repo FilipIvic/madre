@@ -15,11 +15,28 @@ const PHONE_DISPLAY = "+385 95 35 45 315";
 
 type Slot = { time: string; remaining: number };
 
-/** Local calendar date as YYYY-MM-DD, which is what <input type="date"> wants. */
+/**
+ * Zagreb calendar date as YYYY-MM-DD, which is what <input type="date"> wants.
+ * Not the visitor's own date — a guest browsing from another time zone would
+ * otherwise be offered a day the restaurant already considers past.
+ */
 function isoDate(offsetDays = 0): string {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Zagreb" }).format(new Date());
+  const d = new Date(`${today}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + offsetDays);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Name, phone and email from the last successful booking on this device. */
+const SAVED_GUEST_KEY = "madre-guest";
+type SavedGuest = { name?: string; phone?: string; email?: string };
+
+function loadSavedGuest(): SavedGuest {
+  try {
+    return JSON.parse(localStorage.getItem(SAVED_GUEST_KEY) ?? "{}") ?? {};
+  } catch {
+    return {};
+  }
 }
 
 /** "2026-09-20" -> "20.09.2026." */
@@ -47,9 +64,10 @@ const ReservationForm = () => {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [closed, setClosed] = useState(false);
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [saved] = useState(loadSavedGuest);
+  const [name, setName] = useState(saved.name ?? "");
+  const [phone, setPhone] = useState(saved.phone ?? "");
+  const [email, setEmail] = useState(saved.email ?? "");
   const [notes, setNotes] = useState("");
   const [company, setCompany] = useState(""); // honeypot
 
@@ -122,6 +140,14 @@ const ReservationForm = () => {
         return;
       }
 
+      try {
+        localStorage.setItem(
+          SAVED_GUEST_KEY,
+          JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim() }),
+        );
+      } catch {
+        // Private mode or storage blocked — remembering is only a convenience.
+      }
       setDone(true);
     } catch {
       setError(t("reserve.errors.NETWORK"));

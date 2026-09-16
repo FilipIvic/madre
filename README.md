@@ -26,6 +26,8 @@ Built with React, TypeScript, Vite, and Tailwind CSS.
 | Route | Description |
 |---|---|
 | `/` | Main page (hero, about, menu, gallery, contact) |
+| `/rezervacija` | Main page with the reservation form open — the link for Google Business Profile |
+| `/otkazivanje` | Guest cancels a booking from the link in their confirmation email |
 | `/politika-privatnosti` | Privacy policy |
 | `/uvjeti-koristenja` | Terms of service |
 
@@ -115,6 +117,7 @@ ahead people can book — live in one file: `netlify/lib/config.ts`.
 ├── netlify/
 │   ├── functions/
 │   │   ├── availability.ts   # GET  /api/availability
+│   │   ├── cancel.ts         # GET/POST /api/cancel
 │   │   └── reserve.ts        # POST /api/reserve
 │   └── lib/
 │       ├── config.ts         # ← opening hours, capacity, all business rules
@@ -123,6 +126,8 @@ ahead people can book — live in one file: `netlify/lib/config.ts`.
 │       ├── time.ts           # Europe/Zagreb ↔ UTC conversion
 │       ├── validate.ts       # Request validation
 │       ├── email.ts          # Confirmation emails (Gmail SMTP)
+│       ├── links.ts          # Signed cancel links, Google Calendar link, .ics
+│       ├── http.ts           # JSON response helper
 │       └── rules.test.ts     # Logic tests — npm test
 ├── public/
 │   └── images/          # Your restaurant photos go here
