@@ -105,7 +105,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
 
       {/* Card */}
       <motion.div
-        className="relative bg-surface rounded-t-3xl sm:rounded-2xl shadow-2xl px-6 pt-8 pb-0 sm:p-8 w-full max-w-lg max-h-[92svh] sm:max-h-[90vh] overflow-y-auto overscroll-contain"
+        className="relative bg-surface rounded-t-3xl sm:rounded-2xl shadow-2xl px-6 pt-8 pb-0 sm:p-8 w-full max-w-lg max-h-[92svh] sm:max-h-[90vh] overflow-y-auto overflow-x-hidden overscroll-contain"
         initial={{ opacity: 0, scale: 0.96, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 40 }}
