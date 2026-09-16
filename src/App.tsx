@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
   MapPin,
@@ -663,14 +663,24 @@ const Footer = () => {
 };
 
 export default function App() {
-  const [reservationOpen, setReservationOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  // The modal lives at /rezervacija so it can be linked to directly (Google Business Profile etc.).
+  const reservationOpen = location.pathname === "/rezervacija";
+
+  const openReservation = () => navigate("/rezervacija");
+  const closeReservation = () => {
+    // Opened from a button on the site → go back; opened from an external link → land on home.
+    if (location.key !== "default") navigate(-1);
+    else navigate("/", { replace: true });
+  };
 
   return (
     <div className="min-h-screen">
       <AnimatePresence>
-        {reservationOpen && <ReservationModal onClose={() => setReservationOpen(false)} />}
+        {reservationOpen && <ReservationModal onClose={closeReservation} />}
       </AnimatePresence>
-      <Navbar onReserve={() => setReservationOpen(true)} />
+      <Navbar onReserve={openReservation} />
       <main>
         <Hero />
         <About />

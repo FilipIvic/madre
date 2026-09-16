@@ -29,8 +29,8 @@ eq("formatDateHr", formatDateHr("2026-09-20"), "20.09.2026.");
 // --- slots -----------------------------------------------------------------
 const wed = slotsForDate("2026-09-16");
 eq("first slot", wed[0], "11:00");
-eq("last slot (close 23:00 - 90min)", wed[wed.length - 1], "21:30");
-eq("slot count", wed.length, 22);
+eq("last slot (close 23:00 - 60min)", wed[wed.length - 1], "22:00");
+eq("slot count", wed.length, 23);
 eq("Monday closed", slotsForDate("2026-09-14"), []);
 
 // --- capacity --------------------------------------------------------------
@@ -42,14 +42,17 @@ const booking = (time: string, endTime: string, guests: number): CalendarEvent =
   extendedProperties: { private: { app: "madre-reservations", guests: String(guests) } },
 });
 
-eq("empty day -> full capacity", remainingSeats("2026-09-16", "19:00", []), 30);
+eq("empty day -> open", remainingSeats("2026-09-16", "12:30", []), 12);
 
-// A 19:00-20:30 booking of 10 must reduce 19:00, 19:30 and 20:00 alike.
-const one = [booking("19:00", "20:30", 10)];
-eq("overlap at 19:00", remainingSeats("2026-09-16", "19:00", one), 20);
-eq("overlap at 20:00", remainingSeats("2026-09-16", "20:00", one), 20);
-eq("no overlap at 20:30", remainingSeats("2026-09-16", "20:30", one), 30);
-eq("no overlap at 17:00", remainingSeats("2026-09-16", "17:00", one), 30);
+// 4 guests at 12:30 closes 12:30 only — 12:00 and 13:00 stay open.
+const four = [booking("12:30", "14:00", 4)];
+eq("4 guests at 12:30 -> 12:30 taken", remainingSeats("2026-09-16", "12:30", four), 0);
+eq("4 guests at 12:30 -> 13:00 open", remainingSeats("2026-09-16", "13:00", four), 12);
+eq("4 guests at 12:30 -> 12:00 open", remainingSeats("2026-09-16", "12:00", four), 12);
+
+// Up to 3 guests keeps the slot open; small bookings add up.
+eq("3 guests at 12:30 -> still open", remainingSeats("2026-09-16", "12:30", [booking("12:30", "14:00", 3)]), 12);
+eq("2 + 2 guests at 12:30 -> taken", remainingSeats("2026-09-16", "12:30", [booking("12:30", "14:00", 2), booking("12:30", "14:00", 2)]), 0);
 
 // Manual entry typed straight into Google Calendar, title starting with a number.
 const manual: CalendarEvent = {
@@ -58,7 +61,25 @@ const manual: CalendarEvent = {
   start: { dateTime: zagrebToUtc("2026-09-16", "19:00").toISOString() },
   end: { dateTime: zagrebToUtc("2026-09-16", "20:30").toISOString() },
 };
-eq("manual entry counts", remainingSeats("2026-09-16", "19:00", [...one, manual]), 14);
+eq("manual entry counts", remainingSeats("2026-09-16", "19:00", [manual]), 0);
+eq("manual entry doesn't close next slot", remainingSeats("2026-09-16", "19:30", [manual]), 12);
+
+// An off-grid manual time (19:15) counts toward the slot it falls in.
+const offGrid: CalendarEvent = { ...manual, id: "o", start: { dateTime: zagrebToUtc("2026-09-16", "19:15").toISOString() } };
+eq("19:15 entry counts in 19:00 slot", remainingSeats("2026-09-16", "19:00", [offGrid]), 0);
+
+// The way bookings have always been written by hand.
+const titled = (summary: string): CalendarEvent => ({
+  id: summary,
+  summary,
+  start: { dateTime: zagrebToUtc("2026-09-16", "12:30").toISOString() },
+  end: { dateTime: zagrebToUtc("2026-09-16", "13:30").toISOString() },
+});
+eq("'Rezervacija 4 osobe - Josipa' counts 4", remainingSeats("2026-09-16", "12:30", [titled("Rezervacija 4 osobe - Josipa")]), 0);
+eq("'Rezervacija 2 osobe - Anna' counts 2", remainingSeats("2026-09-16", "12:30", [titled("Rezervacija 2 osobe - Anna Kotyk")]), 12);
+eq("'rezervacija: 5 ljudi' counts 5", remainingSeats("2026-09-16", "12:30", [titled("rezervacija: 5 ljudi")]), 0);
+eq("two handwritten 2s add up", remainingSeats("2026-09-16", "12:30", [titled("Rezervacija 2 osobe - A"), titled("Rezervacija 2 osobe - B")]), 0);
+eq("'Rezervacija' without number is a note", remainingSeats("2026-09-16", "12:30", [titled("Rezervacija - Josipa")]), 12);
 
 // A note without a leading number consumes nothing.
 const note: CalendarEvent = {
@@ -67,7 +88,7 @@ const note: CalendarEvent = {
   start: { dateTime: zagrebToUtc("2026-09-16", "19:00").toISOString() },
   end: { dateTime: zagrebToUtc("2026-09-16", "20:00").toISOString() },
 };
-eq("plain note ignored", remainingSeats("2026-09-16", "19:00", [note]), 30);
+eq("plain note ignored", remainingSeats("2026-09-16", "19:00", [note]), 12);
 
 // ZATVORENO all-day event closes the whole day.
 const closed: CalendarEvent = {
@@ -78,7 +99,17 @@ const closed: CalendarEvent = {
 };
 eq("all-day block at 11:00", remainingSeats("2026-09-16", "11:00", [closed]), 0);
 eq("all-day block at 21:30", remainingSeats("2026-09-16", "21:30", [closed]), 0);
-eq("block does not leak to next day", remainingSeats("2026-09-17", "19:00", [closed]), 30);
+eq("block does not leak to next day", remainingSeats("2026-09-17", "19:00", [closed]), 12);
+
+// A timed block 20:00–22:00 also closes slots whose table would run into it.
+const evening: CalendarEvent = {
+  id: "e",
+  summary: "ZATVORENO",
+  start: { dateTime: zagrebToUtc("2026-09-16", "20:00").toISOString() },
+  end: { dateTime: zagrebToUtc("2026-09-16", "22:00").toISOString() },
+};
+eq("timed block closes 19:30 (table runs past 20:00)", remainingSeats("2026-09-16", "19:30", [evening]), 0);
+eq("timed block leaves 19:00 open (table done by 20:00)", remainingSeats("2026-09-16", "19:00", [evening]), 12);
 
 // --- lead time -------------------------------------------------------------
 const now = new Date("2026-09-16T16:10:00Z"); // 18:10 Zagreb (CEST)
@@ -86,9 +117,10 @@ eq("19:00 too late at 18:10 (<60min)", isTooLate("2026-09-16", "19:00", now), tr
 eq("19:30 still bookable at 18:10", isTooLate("2026-09-16", "19:30", now), false);
 eq("past slot is too late", isTooLate("2026-09-16", "12:00", now), true);
 
-const slots = availability("2026-09-16", one, now);
+const slots = availability("2026-09-16", [booking("19:30", "21:00", 6)], now);
 eq("availability hides past slots", slots[0].time, "19:30");
-eq("availability carries remaining", slots[0].remaining, 20);
+eq("availability marks taken slot", slots[0].remaining, 0);
+eq("availability keeps next slot open", slots[1].remaining, 12);
 
 console.log(failed === 0 ? "\nALL PASSED" : `\n${failed} FAILED`);
 process.exit(failed === 0 ? 0 : 1);

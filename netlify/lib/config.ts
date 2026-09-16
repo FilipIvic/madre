@@ -17,11 +17,14 @@ export const OPENING_HOURS: Record<number, { open: string; close: string } | nul
 /** Guests pick a time every this many minutes. */
 export const SLOT_MINUTES = 30;
 
-/** How long one reservation blocks its seats. */
-export const DURATION_MINUTES = 90;
+/** How long a reservation lasts in Google Calendar (and how long a ZATVORENO block must stay clear). */
+export const DURATION_MINUTES = 60;
 
-/** Total guests that may be seated in any overlapping window. */
-export const SEATS_PER_SLOT = Number(process.env.SEATS_PER_SLOT || 30);
+/**
+ * A time slot is marked taken once this many guests (or more) are booked in it.
+ * Only that slot closes — e.g. 4 guests at 12:30 closes 12:30, but 13:00 stays open.
+ */
+export const SLOT_FULL_AT_GUESTS = 4;
 
 /** Party sizes above this must call — the form says so. */
 export const MAX_PARTY_SIZE = 12;

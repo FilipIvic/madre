@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "dev:api": "netlify functions:serve --port 3001 & vite --port=3000 --host=0.0.0.0",
+    "dev:api": "npx -y netlify-cli@27 functions:serve --port 3001 & vite --port=3000 --host=0.0.0.0",
     "test": "esbuild netlify/lib/rules.test.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/madre-test.mjs --external:google-auth-library --log-level=error && node node_modules/.cache/madre-test.mjs"
   },
   "dependencies": {
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
-    "netlify-cli": "^17.38.1",
+    "esbuild": "^0.28.2",
     "puppeteer": "^25.1.0",
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",

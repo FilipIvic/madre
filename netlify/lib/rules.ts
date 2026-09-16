@@ -8,9 +8,10 @@ import {
   APP_TAG,
   BLOCK_KEYWORD,
   DURATION_MINUTES,
+  MAX_PARTY_SIZE,
   MIN_LEAD_MINUTES,
   OPENING_HOURS,
-  SEATS_PER_SLOT,
+  SLOT_FULL_AT_GUESTS,
   SLOT_MINUTES,
 } from "./config.js";
 import { addMinutes, toMinutes, weekdayOf, zagrebToUtc } from "./time.js";
@@ -45,15 +46,16 @@ function rangeOf(e: CalendarEvent): { start: number; end: number } {
 }
 
 /**
- * Seats an event consumes. Bookings this app made carry an exact count;
- * anything you typed into Google Calendar yourself counts if its title starts
- * with a number, e.g. "4 Ana (telefon)". Everything else is treated as a note.
+ * Guests an event brings. Bookings this app made carry an exact count;
+ * anything typed into Google Calendar by hand counts if its title starts with
+ * "Rezervacija" and a number — "Rezervacija 4 osobe - Josipa" — or just the
+ * number, "4 Ana (telefon)". Everything else is treated as a note.
  */
 function guestsOf(e: CalendarEvent): number {
   const props = e.extendedProperties?.private;
   if (props?.app === APP_TAG) return Number(props.guests) || 0;
 
-  const match = /^\s*(\d{1,2})\b/.exec(e.summary ?? "");
+  const match = /^\s*(?:rezervacija\b[\s:–—-]*)?(\d{1,2})\b/i.exec(e.summary ?? "");
   return match ? Number(match[1]) : 0;
 }
 
@@ -66,25 +68,32 @@ function overlaps(a: { start: number; end: number }, b: { start: number; end: nu
 }
 
 /**
- * Seats still free if a party arrived at `time` on `dateStr`.
- * A reservation holds its seats for DURATION_MINUTES, so overlapping
- * bookings — not just ones starting at the same time — are counted.
+ * Largest party that can still book `time` on `dateStr` — 0 means the slot is taken.
+ *
+ * Only reservations starting within this slot count, so a big table at 12:30
+ * closes 12:30 but leaves 13:00 open. The slot closes once SLOT_FULL_AT_GUESTS
+ * or more guests are booked in it. A ZATVORENO block closes
+ * every slot whose table would overlap it.
  */
 export function remainingSeats(dateStr: string, time: string, events: CalendarEvent[]): number {
-  const window = {
-    start: zagrebToUtc(dateStr, time).getTime(),
+  const slotStart = zagrebToUtc(dateStr, time).getTime();
+  const slotEnd = zagrebToUtc(dateStr, addMinutes(time, SLOT_MINUTES)).getTime();
+  const table = {
+    start: slotStart,
     end: zagrebToUtc(dateStr, addMinutes(time, DURATION_MINUTES)).getTime(),
   };
 
-  let taken = 0;
+  let booked = 0;
   for (const e of events) {
     const range = rangeOf(e);
-    if (!overlaps(window, range)) continue;
-    if (isBlock(e)) return 0; // closed for this period
-    taken += guestsOf(e);
+    if (isBlock(e)) {
+      if (overlaps(table, range)) return 0; // closed for this period
+      continue;
+    }
+    if (range.start >= slotStart && range.start < slotEnd) booked += guestsOf(e);
   }
 
-  return Math.max(0, SEATS_PER_SLOT - taken);
+  return booked >= SLOT_FULL_AT_GUESTS ? 0 : MAX_PARTY_SIZE;
 }
 
 /** True once a slot is too close to now (or already past) to accept online. */

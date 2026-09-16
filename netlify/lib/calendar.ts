@@ -88,9 +88,16 @@ export type NewReservation = {
   notes: string;
 };
 
+/** Croatian plural, matching how bookings are written by hand: 1 osoba, 2–4 osobe, 5+ osoba. */
+function osobaForm(n: number): string {
+  if (n % 10 === 1 && n % 100 !== 11) return "osoba";
+  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) return "osobe";
+  return "osoba";
+}
+
 export async function createReservation(r: NewReservation): Promise<CalendarEvent> {
   const body = {
-    summary: `${r.guests} os. — ${r.name}`,
+    summary: `Rezervacija ${r.guests} ${osobaForm(r.guests)} - ${r.name}`,
     description: [
       `Gostiju: ${r.guests}`,
       `Ime: ${r.name}`,

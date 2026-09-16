@@ -13,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/rezervacija" element={<App />} />
         <Route path="/politika-privatnosti" element={<PrivacyPolicy />} />
         <Route path="/uvjeti-koristenja" element={<TermsOfService />} />
       </Routes>

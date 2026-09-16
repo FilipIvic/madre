@@ -67,7 +67,6 @@ Netlify → your site → **Site configuration → Environment variables → Add
 | `GOOGLE_CLIENT_EMAIL` | `client_email` from the JSON |
 | `GOOGLE_PRIVATE_KEY` | `private_key` from the JSON — the whole thing, `-----BEGIN PRIVATE KEY-----` to `-----END PRIVATE KEY-----\n` |
 | `GOOGLE_CALENDAR_ID` | the Calendar ID from step 4 |
-| `SEATS_PER_SLOT` | optional, how many guests fit at once. Default `30` |
 
 **About `GOOGLE_PRIVATE_KEY`:** copy it exactly as it appears in the JSON file, keeping the literal `\n` sequences. Do not reformat it into real line breaks. The code converts them back.
 
@@ -110,7 +109,7 @@ npm test                 # slot, capacity and timezone logic (no network, no sec
 
 **Closing a day.** Create an event on the reservations calendar whose title starts with `ZATVORENO` — e.g. `ZATVORENO — privatna zabava`. An all-day event closes the whole day; a timed one closes just those hours. The website stops offering those slots straight away.
 
-**Phone bookings.** Add them to the same calendar and start the title with the number of guests: `6 Ana (telefon)`. The app counts those seats, so the website won't overbook on top of them. A title without a leading number (`dostava vina`) is treated as a note and takes no seats.
+**Phone bookings.** Add them to the same calendar the way you always have — `Rezervacija`, the number of guests, then the name: `Rezervacija 4 osobe - Josipa` (a title that just starts with the number, `6 Ana`, works too). The app counts those guests in the time slot the event starts in, so the website won't overbook on top of them. A title without a number (`dostava vina`) is treated as a note and takes no seats. Website bookings are written in the same format and last one hour.
 
 **Changing hours, capacity or how long a table is held.** All of it is in `netlify/lib/config.ts` — plain values with comments. Edit, commit, push; Netlify redeploys.
 
@@ -123,7 +122,7 @@ npm test                 # slot, capacity and timezone logic (no network, no sec
 3. Picks a time, fills in name / phone / email → **Potvrdi rezervaciju**
 4. Event appears in your calendar; guest and you both get an email
 
-Rules the app enforces: closed Mondays, no bookings less than 1 hour ahead, max 60 days ahead, max 12 people online (bigger parties are told to call), one booking per email per day, and capacity is re-checked at the moment of writing in case the slot filled up while they were typing.
+Rules the app enforces: closed Mondays, no bookings less than 1 hour ahead, max 60 days ahead, max 12 people online (bigger parties are told to call), a time slot closes once 4 or more guests are booked in it (neighbouring slots stay open), one booking per email per day, and capacity is re-checked at the moment of writing in case the slot filled up while they were typing.
 
 ---
 

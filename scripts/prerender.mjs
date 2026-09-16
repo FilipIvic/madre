@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
-const ROUTES = ["/", "/politika-privatnosti", "/uvjeti-koristenja"];
+const ROUTES = ["/", "/rezervacija", "/politika-privatnosti", "/uvjeti-koristenja"];
 
 const MIME = {
   ".html": "text/html",

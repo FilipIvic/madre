@@ -5,7 +5,7 @@
  */
 
 import { listDayEvents } from "../lib/calendar.js";
-import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, SEATS_PER_SLOT, missingEnv } from "../lib/config.js";
+import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, missingEnv } from "../lib/config.js";
 import { availability } from "../lib/rules.js";
 import { daysBetween, zagrebToday } from "../lib/time.js";
 
@@ -39,7 +39,6 @@ export default async (req: Request): Promise<Response> => {
     return json({
       date,
       maxPartySize: MAX_PARTY_SIZE,
-      seatsPerSlot: SEATS_PER_SLOT,
       // Closed day, fully booked, or everything left is too soon to book online.
       closed: slots.length === 0,
       slots,
