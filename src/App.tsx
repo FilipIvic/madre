@@ -249,9 +249,11 @@ const Hero = () => {
           loop
           playsInline
           preload="auto"
-          poster="/images/hero.jpg"
+          poster="/images/hero.webp"
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          {/* Phones get a lighter 960p cut; wider screens the full 720p. */}
+          <source src="/videos/hero.mp4" type="video/mp4" media="(min-width: 768px)" />
+          <source src="/videos/hero-mobile.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/35"></div>
       </div>
@@ -300,7 +302,7 @@ const About = () => {
             <img
               alt="Madre bistro"
               className="w-full h-full object-cover"
-              src="/images/about-main.jpg"
+              src="/images/about-main.webp"
             />
           </motion.div>
           <motion.div
@@ -313,7 +315,7 @@ const About = () => {
             <img
               alt="Priprema jela"
               className="w-full h-full object-cover"
-              src="/images/about-inset.jpg"
+              src="/images/about-inset.webp"
             />
           </motion.div>
         </div>
@@ -332,15 +334,15 @@ const About = () => {
           <div className="pt-4">
             <div className="grid grid-cols-3 gap-6">
               <div>
-                <h4 className="font-headline text-2xl text-tertiary">{t("about.stat1Value")}</h4>
+                <h3 className="font-headline text-2xl text-tertiary">{t("about.stat1Value")}</h3>
                 <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat1Label")}</p>
               </div>
               <div>
-                <h4 className="font-headline text-2xl text-tertiary">{t("about.stat2Value")}</h4>
+                <h3 className="font-headline text-2xl text-tertiary">{t("about.stat2Value")}</h3>
                 <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat2Label")}</p>
               </div>
               <div>
-                <h4 className="font-headline text-2xl text-tertiary">{t("about.stat3Value")}</h4>
+                <h3 className="font-headline text-2xl text-tertiary">{t("about.stat3Value")}</h3>
                 <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat3Label")}</p>
               </div>
             </div>
@@ -372,7 +374,7 @@ const DailySpecials = () => {
           alt={t("menu.daily.njoki.name")}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          src="/images/njoki-pasticada.jpg"
+          src="/images/njoki-pasticada.webp"
         />
       </div>
       <div className="md:col-span-7 p-8 md:p-10">
@@ -431,7 +433,7 @@ const Menu = () => {
               <img
                 alt={t("menu.dish1Name")}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                src="/images/njoki-tartuf.jpg"
+                src="/images/njoki-tartuf.webp"
               />
             </div>
             <div className="p-8">
@@ -455,7 +457,7 @@ const Menu = () => {
                 <img
                   alt={t("menu.dish2Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="/images/linguine-buca-panceta.jpg"
+                  src="/images/linguine-buca-panceta.webp"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center">
@@ -476,7 +478,7 @@ const Menu = () => {
                 <img
                   alt={t("menu.dish3Name")}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="/images/ravioli-ricotta-pistacio.jpg"
+                  src="/images/ravioli-ricotta-pistacio.webp"
                 />
               </div>
               <div className="w-2/3 p-6 flex flex-col justify-center text-right">
@@ -511,42 +513,42 @@ const Gallery = () => {
 
   const galleryImages = [
     // Vani — eksterijer i natpisi
-    { src: "/images/galerija-7.jpg", alt: t("gallery.alt7") },   // ulaz / storefront
-    { src: "/images/galerija-18.jpg", alt: t("gallery.alt18") }, // ručno rađena vrata
-    { src: "/images/galerija-14.jpg", alt: t("gallery.alt14") }, // "OPEN" ploča
-    { src: "/images/galerija-1.jpg", alt: t("gallery.alt1") },   // Madre natpis
+    { src: "/images/galerija-7.webp", alt: t("gallery.alt7") },   // ulaz / storefront
+    { src: "/images/galerija-18.webp", alt: t("gallery.alt18") }, // ručno rađena vrata
+    { src: "/images/galerija-14.webp", alt: t("gallery.alt14") }, // "OPEN" ploča
+    { src: "/images/galerija-1.webp", alt: t("gallery.alt1") },   // Madre natpis
     // Unutra — prostor
-    { src: "/images/galerija-8.jpg", alt: t("gallery.alt8") },   // stolovi uz prozor
-    { src: "/images/galerija-12.jpg", alt: t("gallery.alt12") }, // kutak / kameni stup
-    { src: "/images/galerija-16.jpg", alt: t("gallery.alt16") }, // lampioni / banketa
-    { src: "/images/galerija-5.jpg", alt: t("gallery.alt5") },   // drveni ormar
+    { src: "/images/galerija-8.webp", alt: t("gallery.alt8") },   // stolovi uz prozor
+    { src: "/images/galerija-12.webp", alt: t("gallery.alt12") }, // kutak / kameni stup
+    { src: "/images/galerija-16.webp", alt: t("gallery.alt16") }, // lampioni / banketa
+    { src: "/images/galerija-5.webp", alt: t("gallery.alt5") },   // drveni ormar
     // Uz čašu
-    { src: "/images/galerija-10.jpg", alt: t("gallery.alt10") }, // nazdravljanje
+    { src: "/images/galerija-10.webp", alt: t("gallery.alt10") }, // nazdravljanje
     // Spiza — predjela
-    { src: "/images/galerija-19.jpg", alt: t("gallery.alt19") }, // juha od buče
-    { src: "/images/galerija-20.jpg", alt: t("gallery.alt20") }, // komiške spring role
-    { src: "/images/galerija-21.jpg", alt: t("gallery.alt21") }, // tatarski biftek
-    { src: "/images/galerija-22.jpg", alt: t("gallery.alt22") }, // pileća pašteta
-    { src: "/images/galerija-3.jpg", alt: t("gallery.alt3") },   // arancini
-    { src: "/images/galerija-4.jpg", alt: t("gallery.alt4") },   // carpaccio
-    { src: "/images/galerija-17.jpg", alt: t("gallery.alt17") }, // parmigiana
+    { src: "/images/galerija-19.webp", alt: t("gallery.alt19") }, // juha od buče
+    { src: "/images/galerija-20.webp", alt: t("gallery.alt20") }, // komiške spring role
+    { src: "/images/galerija-21.webp", alt: t("gallery.alt21") }, // tatarski biftek
+    { src: "/images/galerija-22.webp", alt: t("gallery.alt22") }, // pileća pašteta
+    { src: "/images/galerija-3.webp", alt: t("gallery.alt3") },   // arancini
+    { src: "/images/galerija-4.webp", alt: t("gallery.alt4") },   // carpaccio
+    { src: "/images/galerija-17.webp", alt: t("gallery.alt17") }, // parmigiana
     // Spiza — njoki
-    { src: "/images/galerija-23.jpg", alt: t("gallery.alt23") }, // njoki pivac i gljive
-    { src: "/images/galerija-24.jpg", alt: t("gallery.alt24") }, // njoki lignja i bob
-    { src: "/images/galerija-11.jpg", alt: t("gallery.alt11") }, // njoki s junetinom
+    { src: "/images/galerija-23.webp", alt: t("gallery.alt23") }, // njoki pivac i gljive
+    { src: "/images/galerija-24.webp", alt: t("gallery.alt24") }, // njoki lignja i bob
+    { src: "/images/galerija-11.webp", alt: t("gallery.alt11") }, // njoki s junetinom
     // Spiza — manistra
-    { src: "/images/galerija-25.jpg", alt: t("gallery.alt25") }, // tagliatelle junetina
-    { src: "/images/galerija-26.jpg", alt: t("gallery.alt26") }, // linguine adria
-    { src: "/images/galerija-27.jpg", alt: t("gallery.alt27") }, // manistra i šalša
-    { src: "/images/galerija-2.jpg", alt: t("gallery.alt2") },   // ravioli
-    { src: "/images/galerija-9.jpg", alt: t("gallery.alt9") },   // tagliatelle ragu
-    { src: "/images/galerija-13.jpg", alt: t("gallery.alt13") }, // tagliatelle burrata
-    { src: "/images/galerija-15.jpg", alt: t("gallery.alt15") }, // kremasta tjestenina
+    { src: "/images/galerija-25.webp", alt: t("gallery.alt25") }, // tagliatelle junetina
+    { src: "/images/galerija-26.webp", alt: t("gallery.alt26") }, // linguine adria
+    { src: "/images/galerija-27.webp", alt: t("gallery.alt27") }, // manistra i šalša
+    { src: "/images/galerija-2.webp", alt: t("gallery.alt2") },   // ravioli
+    { src: "/images/galerija-9.webp", alt: t("gallery.alt9") },   // tagliatelle ragu
+    { src: "/images/galerija-13.webp", alt: t("gallery.alt13") }, // tagliatelle burrata
+    { src: "/images/galerija-15.webp", alt: t("gallery.alt15") }, // kremasta tjestenina
     // Spiza — slatko
-    { src: "/images/galerija-28.jpg", alt: t("gallery.alt28") }, // crème brûlée od buče
-    { src: "/images/galerija-29.jpg", alt: t("gallery.alt29") }, // kruška i kozji sir
-    { src: "/images/galerija-30.jpg", alt: t("gallery.alt30") }, // 3 praline
-    { src: "/images/galerija-6.jpg", alt: t("gallery.alt6") },   // tiramisu
+    { src: "/images/galerija-28.webp", alt: t("gallery.alt28") }, // crème brûlée od buče
+    { src: "/images/galerija-29.webp", alt: t("gallery.alt29") }, // kruška i kozji sir
+    { src: "/images/galerija-30.webp", alt: t("gallery.alt30") }, // 3 praline
+    { src: "/images/galerija-6.webp", alt: t("gallery.alt6") },   // tiramisu
   ];
 
   return (
@@ -597,7 +599,7 @@ const Contact = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-primary">
                   <MapPin size={20} />
-                  <h5 className="font-bold uppercase tracking-widest text-xs">{t("contact.addressLabel")}</h5>
+                  <h3 className="font-bold uppercase tracking-widest text-xs">{t("contact.addressLabel")}</h3>
                 </div>
                 <p className="text-on-surface-variant">
                   {t("contact.addressLine1")}<br />
@@ -608,7 +610,7 @@ const Contact = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-primary">
                   <Phone size={20} />
-                  <h5 className="font-bold uppercase tracking-widest text-xs">{t("contact.reservationsLabel")}</h5>
+                  <h3 className="font-bold uppercase tracking-widest text-xs">{t("contact.reservationsLabel")}</h3>
                 </div>
                 <div className="flex flex-col gap-1">
                   <a href="tel:+385953545315" className="text-on-surface-variant hover:text-primary transition-colors">+385 95 35 45 315</a>
@@ -619,7 +621,7 @@ const Contact = () => {
               <div className="space-y-4 md:col-span-2">
                 <div className="flex items-center gap-3 text-primary">
                   <Clock size={20} />
-                  <h5 className="font-bold uppercase tracking-widest text-xs">{t("contact.hoursLabel")}</h5>
+                  <h3 className="font-bold uppercase tracking-widest text-xs">{t("contact.hoursLabel")}</h3>
                 </div>
                 <div className="flex flex-col gap-2 text-on-surface-variant max-w-xs">
                   <div className="flex justify-between gap-8">
@@ -681,20 +683,20 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <h6 className="font-body font-bold text-xs uppercase tracking-widest text-primary mb-2">{t("footer.connectLabel")}</h6>
-          <a href="https://www.instagram.com/madre.split/" target="_blank" rel="noopener noreferrer" className="text-tertiary hover:underline decoration-primary underline-offset-4 opacity-80 hover:opacity-100 transition-opacity text-sm flex items-center gap-2 justify-center md:justify-start">
+          <h3 className="font-body font-bold text-xs uppercase tracking-widest text-primary mb-2">{t("footer.connectLabel")}</h3>
+          <a href="https://www.instagram.com/madre.split/" target="_blank" rel="noopener noreferrer" className="text-tertiary hover:underline decoration-primary underline-offset-4 text-sm flex items-center gap-2 justify-center md:justify-start">
             <Instagram size={14} /> Instagram
           </a>
         </div>
 
         <div className="flex flex-col gap-2">
-          <h6 className="font-body font-bold text-xs uppercase tracking-widest text-primary mb-2">{t("footer.legalLabel")}</h6>
-          <Link to="/politika-privatnosti" className="text-tertiary hover:underline decoration-primary underline-offset-4 opacity-80 hover:opacity-100 transition-opacity text-sm">{t("footer.privacy")}</Link>
-          <Link to="/uvjeti-koristenja" className="text-tertiary hover:underline decoration-primary underline-offset-4 opacity-80 hover:opacity-100 transition-opacity text-sm">{t("footer.terms")}</Link>
+          <h3 className="font-body font-bold text-xs uppercase tracking-widest text-primary mb-2">{t("footer.legalLabel")}</h3>
+          <Link to="/politika-privatnosti" className="text-tertiary hover:underline decoration-primary underline-offset-4 text-sm">{t("footer.privacy")}</Link>
+          <Link to="/uvjeti-koristenja" className="text-tertiary hover:underline decoration-primary underline-offset-4 text-sm">{t("footer.terms")}</Link>
         </div>
       </div>
       <div className="mt-12 text-center">
-        <p className="font-body text-xs text-secondary opacity-60">
+        <p className="font-body text-xs text-secondary">
           {t("footer.copyright", { year: new Date().getFullYear() })}
         </p>
       </div>
