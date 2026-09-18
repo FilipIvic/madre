@@ -300,7 +300,9 @@ const Hero = () => {
 };
 
 const About = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // The locals discount is for Croatian speakers only — not shown on the English site.
+  const showLocalsDiscount = i18n.language.startsWith("hr");
   return (
     <section id="about" className="py-20 md:py-32 bg-surface">
       <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
@@ -350,7 +352,7 @@ const About = () => {
             {t("about.quote")}
           </p>
           <div className="pt-4">
-            <div className="grid grid-cols-3 gap-6">
+            <div className={`grid gap-6 ${showLocalsDiscount ? "grid-cols-3" : "grid-cols-2"}`}>
               <div>
                 <h3 className="font-headline text-2xl text-tertiary">{t("about.stat1Value")}</h3>
                 <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat1Label")}</p>
@@ -359,10 +361,12 @@ const About = () => {
                 <h3 className="font-headline text-2xl text-tertiary">{t("about.stat2Value")}</h3>
                 <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat2Label")}</p>
               </div>
-              <div>
-                <h3 className="font-headline text-2xl text-tertiary">{t("about.stat3Value")}</h3>
-                <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat3Label")}</p>
-              </div>
+              {showLocalsDiscount && (
+                <div>
+                  <h3 className="font-headline text-2xl text-tertiary">{t("about.stat3Value")}</h3>
+                  <p className="text-sm font-body uppercase tracking-tighter text-secondary">{t("about.stat3Label")}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

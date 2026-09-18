@@ -22,8 +22,6 @@ const en = {
     stat1Label: "Local ingredients",
     stat2Value: "Zero",
     stat2Label: "Chemicals or toxins",
-    stat3Value: "10%",
-    stat3Label: "Off for locals",
   },
   menu: {
     headline: "Our Specialties",
@@ -86,7 +84,7 @@ const en = {
   },
   contact: {
     headline: "Come sit at our table.",
-    body: "Tucked into the stone heart of Split, in a space we built with our own hands from floor to ceiling. Come for the real food and stay a while — 10% off for locals.",
+    body: "Tucked into the stone heart of Split, in a space we built with our own hands from floor to ceiling. Come for the real food and stay a while.",
     addressLabel: "Address",
     addressLine1: "Ulica kralja Zvonimira 12",
     addressLine2: "21000 Split, Croatia",
