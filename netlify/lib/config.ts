@@ -56,6 +56,14 @@ export const RESTAURANT = {
   address: "Ulica kralja Zvonimira 12, 21000 Split",
 };
 
+/**
+ * Bookings made with the restaurant's own address are staff logging a phone call
+ * or walk-in: no duplicate check, no emails, phone optional.
+ */
+export function isStaffEmail(email: string): boolean {
+  return email.trim().toLowerCase() === RESTAURANT.email;
+}
+
 /** Secrets the app cannot run without. */
 export const REQUIRED_ENV = [
   "GOOGLE_CLIENT_EMAIL",

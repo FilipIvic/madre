@@ -7,7 +7,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import { CalendarCheck, Loader2, Phone, Users } from "lucide-react";
-import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, RESTAURANT } from "../netlify/lib/config";
+import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, RESTAURANT, isStaffEmail } from "../netlify/lib/config";
 
 type Slot = { time: string; remaining: number };
 
@@ -71,8 +71,7 @@ const ReservationForm = () => {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
-  // Staff logging a booking under the restaurant's address — the server sends no emails.
-  const isStaff = email.trim().toLowerCase() === RESTAURANT.email;
+  const isStaff = isStaffEmail(email);
 
   // Reload slots whenever the guest picks a different day.
   useEffect(() => {
@@ -175,7 +174,7 @@ const ReservationForm = () => {
     );
   }
 
-  const canSubmit = Boolean(time && name.trim() && phone.trim() && email.trim()) && !submitting;
+  const canSubmit = Boolean(time && name.trim() && (phone.trim() || isStaff) && email.trim()) && !submitting;
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
@@ -288,7 +287,7 @@ const ReservationForm = () => {
             <input
               id="res-phone"
               type="tel"
-              required
+              required={!isStaff}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className={fieldClass}

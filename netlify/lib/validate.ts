@@ -3,7 +3,7 @@
  * Returns machine-readable codes so the frontend can show them in HR or EN.
  */
 
-import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE } from "./config.js";
+import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, isStaffEmail } from "./config.js";
 import { slotsForDate } from "./rules.js";
 import { daysBetween, zagrebToday } from "./time.js";
 
@@ -59,11 +59,12 @@ export function validate(body: unknown): ValidationResult {
   const name = str(b.name);
   if (name.length < 2 || name.length > 80) return { ok: false, code: "INVALID_NAME" };
 
-  const phone = str(b.phone);
-  if (!PHONE_RE.test(phone)) return { ok: false, code: "INVALID_PHONE" };
-
   const email = str(b.email);
   if (!EMAIL_RE.test(email) || email.length > 120) return { ok: false, code: "INVALID_EMAIL" };
+
+  const phone = str(b.phone);
+  const phoneOptional = isStaffEmail(email) && phone === "";
+  if (!phoneOptional && !PHONE_RE.test(phone)) return { ok: false, code: "INVALID_PHONE" };
 
   const notes = str(b.notes).slice(0, 500);
   const lang = str(b.lang) === "en" ? "en" : "hr";

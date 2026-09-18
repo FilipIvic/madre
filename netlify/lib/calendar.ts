@@ -110,7 +110,7 @@ export async function createReservation(r: NewReservation): Promise<CalendarEven
     description: [
       `Gostiju: ${r.guests}`,
       `Ime: ${r.name}`,
-      `Telefon: ${r.phone}`,
+      r.phone ? `Telefon: ${r.phone}` : null,
       `Email: ${r.email}`,
       r.notes ? `Napomena: ${r.notes}` : null,
       "",
@@ -126,7 +126,7 @@ export async function createReservation(r: NewReservation): Promise<CalendarEven
         guests: String(r.guests),
         name: r.name,
         email: r.email,
-        phone: r.phone,
+        ...(r.phone && { phone: r.phone }),
         lang: r.lang,
       },
     },

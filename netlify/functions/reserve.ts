@@ -6,7 +6,7 @@
  */
 
 import { createReservation, listDayEvents } from "../lib/calendar.js";
-import { APP_TAG, DURATION_MINUTES, RESTAURANT, missingEnv } from "../lib/config.js";
+import { APP_TAG, DURATION_MINUTES, isStaffEmail, missingEnv } from "../lib/config.js";
 import { sendGuestConfirmation, sendOwnerNotification } from "../lib/email.js";
 import { json } from "../lib/http.js";
 import { cancelUrl, siteUrl } from "../lib/links.js";
@@ -38,9 +38,7 @@ export default async (req: Request): Promise<Response> => {
     return json({ code: "NOT_CONFIGURED", missing }, 503);
   }
 
-  // Staff log walk-ins and phone bookings under the restaurant's own address:
-  // no duplicate check and no emails for those.
-  const isStaff = r.email.toLowerCase() === RESTAURANT.email;
+  const isStaff = isStaffEmail(r.email);
 
   try {
     const events = await listDayEvents(r.date);
