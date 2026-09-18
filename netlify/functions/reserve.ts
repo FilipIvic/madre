@@ -6,7 +6,7 @@
  */
 
 import { createReservation, listDayEvents } from "../lib/calendar.js";
-import { APP_TAG, DURATION_MINUTES, missingEnv } from "../lib/config.js";
+import { APP_TAG, DURATION_MINUTES, RESTAURANT, missingEnv } from "../lib/config.js";
 import { sendGuestConfirmation, sendOwnerNotification } from "../lib/email.js";
 import { json } from "../lib/http.js";
 import { cancelUrl, siteUrl } from "../lib/links.js";
@@ -38,11 +38,15 @@ export default async (req: Request): Promise<Response> => {
     return json({ code: "NOT_CONFIGURED", missing }, 503);
   }
 
+  // Staff log walk-ins and phone bookings under the restaurant's own address:
+  // no duplicate check and no emails for those.
+  const isStaff = r.email.toLowerCase() === RESTAURANT.email;
+
   try {
     const events = await listDayEvents(r.date);
 
     // Same person, same day — almost always a double-tap on the button.
-    const duplicate = events.some(
+    const duplicate = !isStaff && events.some(
       (e) =>
         e.extendedProperties?.private?.app === APP_TAG &&
         e.extendedProperties.private.email?.toLowerCase() === r.email.toLowerCase(),
@@ -62,7 +66,9 @@ export default async (req: Request): Promise<Response> => {
     const links = { eventId: event.id, cancelUrl: cancelUrl(siteUrl(req), event.id, r.lang) };
 
     // A bounced email must not turn a confirmed booking into an error.
-    await Promise.allSettled([sendGuestConfirmation(r, links), sendOwnerNotification(r)]);
+    if (!isStaff) {
+      await Promise.allSettled([sendGuestConfirmation(r, links), sendOwnerNotification(r)]);
+    }
 
     return json({ ok: true, date: r.date, time: r.time, guests: r.guests }, 201);
   } catch (error) {

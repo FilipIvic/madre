@@ -7,11 +7,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import { CalendarCheck, Loader2, Phone, Users } from "lucide-react";
-
-const MAX_DAYS_AHEAD = 60;
-const MAX_PARTY_SIZE = 12;
-const PHONE = "+385953545315";
-const PHONE_DISPLAY = "+385 95 35 45 315";
+import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, RESTAURANT } from "../netlify/lib/config";
 
 type Slot = { time: string; remaining: number };
 
@@ -74,6 +70,9 @@ const ReservationForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+
+  // Staff logging a booking under the restaurant's address — the server sends no emails.
+  const isStaff = email.trim().toLowerCase() === RESTAURANT.email;
 
   // Reload slots whenever the guest picks a different day.
   useEffect(() => {
@@ -140,13 +139,16 @@ const ReservationForm = () => {
         return;
       }
 
-      try {
-        localStorage.setItem(
-          SAVED_GUEST_KEY,
-          JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim() }),
-        );
-      } catch {
-        // Private mode or storage blocked — remembering is only a convenience.
+      // Staff log bookings for other people — don't prefill the next one with this guest.
+      if (!isStaff) {
+        try {
+          localStorage.setItem(
+            SAVED_GUEST_KEY,
+            JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim() }),
+          );
+        } catch {
+          // Private mode or storage blocked — remembering is only a convenience.
+        }
       }
       setDone(true);
     } catch {
@@ -166,9 +168,9 @@ const ReservationForm = () => {
         <CalendarCheck size={44} className="mx-auto text-primary mb-5" />
         <h3 className="font-headline text-2xl text-primary mb-3">{t("reserve.successHeadline")}</h3>
         <p className="font-body text-sm text-on-surface-variant mb-2">
-          {t("reserve.successBody", { date: prettyDate(date), time, guests })}
+          {t(isStaff ? "reserve.successStaff" : "reserve.successBody", { date: prettyDate(date), time, guests })}
         </p>
-        <p className="font-body text-xs text-secondary opacity-80">{t("reserve.successHold")}</p>
+        {!isStaff && <p className="font-body text-xs text-secondary opacity-80">{t("reserve.successHold")}</p>}
       </motion.div>
     );
   }
@@ -356,8 +358,8 @@ const ReservationForm = () => {
 
       <p className="text-center font-body text-xs text-secondary opacity-80">
         {t("reserve.largePartyNote", { max: MAX_PARTY_SIZE })}{" "}
-        <a href={`tel:${PHONE}`} className="inline-flex items-center gap-1 font-bold text-primary">
-          <Phone size={12} /> {PHONE_DISPLAY}
+        <a href={`tel:${RESTAURANT.phone}`} className="inline-flex items-center gap-1 font-bold text-primary">
+          <Phone size={12} /> {RESTAURANT.phoneDisplay}
         </a>
       </p>
     </form>

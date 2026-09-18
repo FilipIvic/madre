@@ -131,6 +131,7 @@ const hr = {
     submitting: "Šaljemo…",
     successHeadline: "Vidimo se!",
     successBody: "Rezervacija za {{guests}} os. potvrđena je za {{date}} u {{time}}. Potvrdu smo ti poslali na email.",
+    successStaff: "Upisano u kalendar: {{guests}} os., {{date}} u {{time}}. Email nije poslan.",
     successHold: "Stol držimo 15 minuta od dogovorenog termina.",
     largePartyNote: "Za više od {{max}} osoba nazovi nas:",
     errors: {

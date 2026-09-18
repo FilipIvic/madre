@@ -131,6 +131,7 @@ const en = {
     submitting: "Sending…",
     successHeadline: "See you soon!",
     successBody: "Your table for {{guests}} is confirmed for {{date}} at {{time}}. We've emailed you the confirmation.",
+    successStaff: "Logged in the calendar: {{guests}} guests, {{date}} at {{time}}. No email was sent.",
     successHold: "We hold your table for 15 minutes past the booked time.",
     largePartyNote: "For parties over {{max}}, please call us:",
     errors: {
