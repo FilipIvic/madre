@@ -14,23 +14,23 @@ import type { ReservationInput } from "./validate.js";
 
 const COPY = {
   hr: {
-    subject: `Potvrda rezervacije — ${RESTAURANT.name}`,
+    subject: `${RESTAURANT.name}: potvrda rezervacije`,
     greeting: (name: string) => `Bok ${name},`,
     confirmed: "tvoja rezervacija je potvrđena. Veselimo se!",
     date: "Datum",
-    time: "Vrijeme",
+    time: "Vrime",
     guests: "Broj gostiju",
     notes: "Napomena",
-    changeIntro: "Trebaš nešto promijeniti?",
+    changeIntro: "Trebaš nešto prominit?",
     changeBody: `Nazovi nas na ${RESTAURANT.phoneDisplay} i sredit ćemo.`,
     holdNote: "Stol držimo 15 minuta od dogovorenog termina.",
     addToCalendar: "Dodaj u Google kalendar",
     icsNote: "Za Apple ili Outlook kalendar otvori privitak rezervacija.ics.",
     cancel: "Otkaži rezervaciju",
-    calendarTitle: (guests: number) => `${RESTAURANT.name} — rezervacija (${guests} os.)`,
+    calendarTitle: (guests: number) => `${RESTAURANT.name}, rezervacija (${guests} os.)`,
   },
   en: {
-    subject: `Reservation confirmed — ${RESTAURANT.name}`,
+    subject: `${RESTAURANT.name}: reservation confirmed`,
     greeting: (name: string) => `Hi ${name},`,
     confirmed: "your reservation is confirmed. We look forward to it!",
     date: "Date",
@@ -43,7 +43,7 @@ const COPY = {
     addToCalendar: "Add to Google Calendar",
     icsNote: "For Apple or Outlook calendar, open the attached rezervacija.ics.",
     cancel: "Cancel reservation",
-    calendarTitle: (guests: number) => `${RESTAURANT.name} — reservation (${guests} guests)`,
+    calendarTitle: (guests: number) => `${RESTAURANT.name}, reservation (${guests} guests)`,
   },
 };
 
@@ -153,7 +153,7 @@ export async function sendOwnerNotification(r: ReservationInput): Promise<void> 
     <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">Nova rezervacija preko web stranice.</p>
     <table style="border-collapse:collapse;">
       ${row("Datum", formatDateHr(r.date))}
-      ${row("Vrijeme", r.time)}
+      ${row("Vrime", r.time)}
       ${row("Gostiju", String(r.guests))}
       ${row("Ime", r.name)}
       ${row("Telefon", r.phone)}
@@ -162,7 +162,7 @@ export async function sendOwnerNotification(r: ReservationInput): Promise<void> 
     </table>
   `;
   // Reply goes straight to the guest.
-  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os. — ${formatDateHr(r.date)} u ${r.time}`, shell(inner), {
+  await send(to, `Nova rezervacija: ${r.name}, ${r.guests} os., ${formatDateHr(r.date)} u ${r.time}`, shell(inner), {
     replyTo: r.email,
   });
 }
@@ -172,17 +172,17 @@ export type CancelledBooking = { date: string; time: string; guests: number; nam
 export async function sendOwnerCancellation(b: CancelledBooking): Promise<void> {
   const to = process.env.OWNER_EMAIL || RESTAURANT.email;
   const inner = `
-    <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">Gost je otkazao rezervaciju preko linka iz emaila. Termin je ponovno slobodan i obrisan je iz kalendara.</p>
+    <p style="color:#1f1b14;font-size:15px;margin:0 0 24px;">Gost je otkaza rezervaciju preko linka iz emaila. Termin je opet slobodan i obrisan je iz kalendara.</p>
     <table style="border-collapse:collapse;">
       ${row("Datum", formatDateHr(b.date))}
-      ${row("Vrijeme", b.time)}
+      ${row("Vrime", b.time)}
       ${row("Gostiju", String(b.guests))}
       ${row("Ime", b.name)}
       ${row("Telefon", b.phone)}
       ${row("Email", b.email)}
     </table>
   `;
-  await send(to, `Otkazano: ${b.name}, ${b.guests} os. — ${formatDateHr(b.date)} u ${b.time}`, shell(inner), {
+  await send(to, `Otkazano: ${b.name}, ${b.guests} os., ${formatDateHr(b.date)} u ${b.time}`, shell(inner), {
     replyTo: b.email || undefined,
   });
 }

@@ -674,11 +674,11 @@ const Contact = () => {
                 <div className="flex flex-col gap-2 text-on-surface-variant max-w-xs">
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.tueSun")}</p>
-                    <p>11:00 — 23:00</p>
+                    <p>11:00 – 23:00</p>
                   </div>
                   <div className="flex justify-between gap-8 text-sm opacity-80">
                     <p>{t("contact.dailyMenu")}</p>
-                    <p>11:00 — 18:00</p>
+                    <p>11:00 – 18:00</p>
                   </div>
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.mon")}</p>
