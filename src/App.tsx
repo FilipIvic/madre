@@ -546,42 +546,42 @@ const Gallery = () => {
 
   const galleryImages = [
     // Vani — eksterijer i natpisi
-    { src: "/images/galerija-7.webp", alt: t("gallery.alt7") },   // ulaz / storefront
-    { src: "/images/galerija-18.webp", alt: t("gallery.alt18") }, // ručno rađena vrata
-    { src: "/images/galerija-14.webp", alt: t("gallery.alt14") }, // "OPEN" ploča
-    { src: "/images/galerija-1.webp", alt: t("gallery.alt1") },   // Madre natpis
+    { src: "/images/galerija/ulaz.webp", alt: t("gallery.alt7") },   // ulaz / storefront
+    { src: "/images/galerija/ulazna-vrata.webp", alt: t("gallery.alt18") }, // ručno rađena vrata
+    { src: "/images/galerija/ploca-dobrodoslice.webp", alt: t("gallery.alt14") }, // "OPEN" ploča
+    { src: "/images/galerija/madre-natpis.webp", alt: t("gallery.alt1") },   // Madre natpis
     // Unutra — prostor
-    { src: "/images/galerija-8.webp", alt: t("gallery.alt8") },   // stolovi uz prozor
-    { src: "/images/galerija-12.webp", alt: t("gallery.alt12") }, // kutak / kameni stup
-    { src: "/images/galerija-16.webp", alt: t("gallery.alt16") }, // lampioni / banketa
-    { src: "/images/galerija-5.webp", alt: t("gallery.alt5") },   // drveni ormar
+    { src: "/images/galerija/stolovi-uz-prozor.webp", alt: t("gallery.alt8") },   // stolovi uz prozor
+    { src: "/images/galerija/kutak.webp", alt: t("gallery.alt12") }, // kutak / kameni stup
+    { src: "/images/galerija/lampioni.webp", alt: t("gallery.alt16") }, // lampioni / banketa
+    { src: "/images/galerija/interijer.webp", alt: t("gallery.alt5") },   // drveni ormar
     // Uz čašu
-    { src: "/images/galerija-10.webp", alt: t("gallery.alt10") }, // nazdravljanje
+    { src: "/images/galerija/nazdravljanje.webp", alt: t("gallery.alt10") }, // nazdravljanje
     // Spiza — predjela
-    { src: "/images/galerija-19.webp", alt: t("gallery.alt19") }, // juha od buče
-    { src: "/images/galerija-20.webp", alt: t("gallery.alt20") }, // komiške spring role
-    { src: "/images/galerija-21.webp", alt: t("gallery.alt21") }, // tatarski biftek
-    { src: "/images/galerija-22.webp", alt: t("gallery.alt22") }, // pileća pašteta
-    { src: "/images/galerija-3.webp", alt: t("gallery.alt3") },   // arancini
-    { src: "/images/galerija-4.webp", alt: t("gallery.alt4") },   // carpaccio
-    { src: "/images/galerija-17.webp", alt: t("gallery.alt17") }, // parmigiana
+    { src: "/images/galerija/juha-od-buce.webp", alt: t("gallery.alt19"), meal: true }, // juha od buče
+    { src: "/images/galerija/spring-role.webp", alt: t("gallery.alt20"), meal: true }, // komiške spring role
+    { src: "/images/galerija/tatarski-biftek.webp", alt: t("gallery.alt21"), meal: true }, // tatarski biftek
+    { src: "/images/galerija/pasteta-pileca-brusnica.webp", alt: t("gallery.alt22"), meal: true }, // pileća pašteta
+    { src: "/images/galerija/burrata-arancin.webp", alt: t("gallery.alt3"), meal: true },   // arancini
+    { src: "/images/galerija/beef-carpaccio.webp", alt: t("gallery.alt4"), meal: true },   // carpaccio
+    { src: "/images/galerija/parmigiana-melanzana.webp", alt: t("gallery.alt17"), meal: true }, // parmigiana
     // Spiza — njoki
-    { src: "/images/galerija-23.webp", alt: t("gallery.alt23") }, // njoki pivac i gljive
-    { src: "/images/galerija-24.webp", alt: t("gallery.alt24") }, // njoki lignja i bob
-    { src: "/images/galerija-11.webp", alt: t("gallery.alt11") }, // njoki s junetinom
+    { src: "/images/galerija/njoki-pivac-gljive.webp", alt: t("gallery.alt23"), meal: true }, // njoki pivac i gljive
+    { src: "/images/galerija/njoki-lignja-bob.webp", alt: t("gallery.alt24"), meal: true }, // njoki lignja i bob
+    { src: "/images/galerija/njoki-pasticada.webp", alt: t("gallery.alt11"), meal: true }, // njoki s junetinom
     // Spiza — manistra
-    { src: "/images/galerija-25.webp", alt: t("gallery.alt25") }, // tagliatelle junetina
-    { src: "/images/galerija-26.webp", alt: t("gallery.alt26") }, // linguine adria
-    { src: "/images/galerija-27.webp", alt: t("gallery.alt27") }, // manistra i šalša
-    { src: "/images/galerija-2.webp", alt: t("gallery.alt2") },   // ravioli
-    { src: "/images/galerija-9.webp", alt: t("gallery.alt9") },   // tagliatelle ragu
-    { src: "/images/galerija-13.webp", alt: t("gallery.alt13") }, // tagliatelle burrata
-    { src: "/images/galerija-15.webp", alt: t("gallery.alt15") }, // kremasta tjestenina
+    { src: "/images/galerija/tagliatelle-junetina.webp", alt: t("gallery.alt25"), meal: true }, // tagliatelle junetina
+    { src: "/images/galerija/linguine-adria.webp", alt: t("gallery.alt26"), meal: true }, // linguine adria
+    { src: "/images/galerija/linguine.webp", alt: t("gallery.alt27"), meal: true }, // manistra i šalša
+    { src: "/images/galerija/carbonara-raviol.webp", alt: t("gallery.alt2"), meal: true },   // ravioli
+    { src: "/images/galerija/tagliatelle-ragu.webp", alt: t("gallery.alt9"), meal: true },   // tagliatelle ragu
+    { src: "/images/galerija/tagliatelle-mortadella.webp", alt: t("gallery.alt13"), meal: true }, // tagliatelle burrata
+    { src: "/images/galerija/ravioli-kozice.webp", alt: t("gallery.alt15"), meal: true }, // kremasta tjestenina
     // Spiza — slatko
-    { src: "/images/galerija-28.webp", alt: t("gallery.alt28") }, // crème brûlée od buče
-    { src: "/images/galerija-29.webp", alt: t("gallery.alt29") }, // kruška i kozji sir
-    { src: "/images/galerija-30.webp", alt: t("gallery.alt30") }, // 3 praline
-    { src: "/images/galerija-6.webp", alt: t("gallery.alt6") },   // tiramisu
+    { src: "/images/galerija/creme-brulee-buca.webp", alt: t("gallery.alt28"), meal: true }, // crème brûlée od buče
+    { src: "/images/galerija/kruska-kozji-sir-crumble.webp", alt: t("gallery.alt29"), meal: true }, // kruška i kozji sir
+    { src: "/images/galerija/3-praline.webp", alt: t("gallery.alt30"), meal: true }, // 3 praline
+    { src: "/images/galerija/tiramisu.webp", alt: t("gallery.alt6"), meal: true },   // tiramisu
   ];
 
   return (
@@ -593,13 +593,13 @@ const Gallery = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {galleryImages.map((image, index) => (
-            <motion.div
-              key={index}
+            <motion.figure
+              key={image.src}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: (index % 3) * 0.08 }}
-              className="aspect-square overflow-hidden rounded-xl group"
+              className="relative aspect-square overflow-hidden rounded-xl group"
             >
               <img
                 src={image.src}
@@ -608,7 +608,19 @@ const Gallery = () => {
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-            </motion.div>
+              {/* Dishes get their name on hover: a soft shade along the bottom edge only, so the
+                  food stays the focus. Hidden from screen readers — the alt text already says it. */}
+              {image.meal && (
+                <figcaption
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end p-3 md:p-4 h-1/2 bg-gradient-to-t from-black/55 via-black/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                >
+                  <span className="translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out rounded-full border border-white/25 bg-white/15 backdrop-blur-md px-3 py-1.5 md:px-4 font-headline text-sm md:text-base leading-tight text-white shadow-lg">
+                    {image.alt}
+                  </span>
+                </figcaption>
+              )}
+            </motion.figure>
           ))}
         </div>
       </div>

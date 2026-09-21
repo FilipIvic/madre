@@ -67,7 +67,7 @@ const hr = {
     alt12: "Topli kutak bistra",
     alt13: "Tagliatelle s burratom",
     alt14: "Naša ploča dobrodošlice",
-    alt15: "Tjestenina u kremastom umaku",
+    alt15: "Ravioli s kozicama",
     alt16: "Zeleni kutak pod lampionima",
     alt17: "Parmigiana od patlidžana",
     alt18: "Ručno rađena ulazna vrata",

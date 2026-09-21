@@ -65,7 +65,7 @@ const en = {
     alt12: "A cosy corner of the bistro",
     alt13: "Tagliatelle with burrata",
     alt14: "Our welcome board",
-    alt15: "Pasta in a creamy sauce",
+    alt15: "Prawn ravioli",
     alt16: "Green corner under the lanterns",
     alt17: "Eggplant parmigiana",
     alt18: "Our hand-made entrance door",

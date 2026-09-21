@@ -72,12 +72,7 @@ Place your images in the `public/images/` folder with these exact names:
 | `jelo-2.jpg` | Menu — second dish |
 | `jelo-3.jpg` | Menu — third dish |
 | `interijer.jpg` | Contact section |
-| `galerija-1.jpg` | Gallery image 1 |
-| `galerija-2.jpg` | Gallery image 2 |
-| `galerija-3.jpg` | Gallery image 3 |
-| `galerija-4.jpg` | Gallery image 4 |
-| `galerija-5.jpg` | Gallery image 5 |
-| `galerija-6.jpg` | Gallery image 6 |
+| `galerija/<name>.webp` | Gallery — named after the dish or spot (e.g. `juha-od-buce.webp`); the list and which ones are dishes live in `Gallery` in `src/App.tsx` |
 
 Supported formats: `.jpg`, `.jpeg`, `.png`, `.webp`
 
