@@ -100,9 +100,11 @@ async function main() {
 
       // Undo what ran in the browser so the saved HTML behaves like index.html: the font
       // stylesheet goes back to non-blocking preload, and the analytics tag (added on load)
-      // is removed so it isn't loaded twice.
+      // is removed so it isn't loaded twice, and the scroll lock below is reset.
       await page.evaluate(() => {
         document.querySelectorAll('link[as="style"][rel="stylesheet"]').forEach((link) => (link.rel = "preload"));
+        // The reservation modal locks scrolling while open; the static page must never ship locked.
+        document.body.removeAttribute("style");
         document.querySelectorAll('script[src*="googletagmanager.com"], script[src*="google-analytics.com"]').forEach((s) => s.remove());
       });
 

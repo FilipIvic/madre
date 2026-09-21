@@ -741,7 +741,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   // The modal lives at /rezervacija so it can be linked to directly (Google Business Profile etc.).
-  const reservationOpen = location.pathname === "/rezervacija";
+  // Netlify redirects it to /rezervacija/ because the prerendered page is a folder, so allow the slash.
+  const reservationOpen = location.pathname.replace(/\/+$/, "") === "/rezervacija";
 
   const openReservation = () => navigate("/rezervacija");
   const closeReservation = () => {
