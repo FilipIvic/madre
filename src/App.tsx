@@ -80,6 +80,9 @@ const ThemeToggle = ({ light = false }: { light?: boolean }) => {
 
 // --- Reservation Modal ---
 
+/** Marks links that open the modal over this page, so closing it can simply go back. */
+const FROM_SITE = { fromSite: true };
+
 const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
   useEffect(() => {
@@ -286,7 +289,7 @@ const Hero = () => {
             {t("hero.body")}
           </p>
           <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
-            <Link to="/rezervacija" className="text-center bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
+            <Link to="/rezervacija" state={FROM_SITE} className="text-center bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1">
               {t("nav.reserve")}
             </Link>
             <a href="#menu" className="text-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">
@@ -646,7 +649,7 @@ const Contact = () => {
                   <a href="tel:+385953545315" className="text-on-surface-variant hover:text-primary transition-colors">+385 95 35 45 315</a>
                   <a href="mailto:madre.split@gmail.com" className="text-on-surface-variant hover:text-primary transition-colors">madre.split@gmail.com</a>
                 </div>
-                <Link to="/rezervacija" className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+                <Link to="/rezervacija" state={FROM_SITE} className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
                   {t("contact.reserveOnline")} <ArrowRight size={16} />
                 </Link>
               </div>
@@ -744,10 +747,11 @@ export default function App() {
   // Netlify redirects it to /rezervacija/ because the prerendered page is a folder, so allow the slash.
   const reservationOpen = location.pathname.replace(/\/+$/, "") === "/rezervacija";
 
-  const openReservation = () => navigate("/rezervacija");
+  const openReservation = () => navigate("/rezervacija", { state: FROM_SITE });
   const closeReservation = () => {
-    // Opened from a button on the site → go back; opened from an external link → land on home.
-    if (location.key !== "default") navigate(-1);
+    // Opened from a button on this page → go back; opened any other way (Google profile,
+    // "book again" on the cancel page) → land on home, since going back there makes no sense.
+    if ((location.state as typeof FROM_SITE | null)?.fromSite) navigate(-1);
     else navigate("/", { replace: true });
   };
 

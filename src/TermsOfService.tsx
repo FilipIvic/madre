@@ -13,7 +13,7 @@ export default function TermsOfService() {
         </Link>
 
         <h1 className="font-headline text-5xl text-primary mb-4">Uvjeti korištenja</h1>
-        <p className="font-body text-sm text-secondary mb-12">Zadnja izmjena: {new Date().toLocaleDateString("hr-HR")}</p>
+        <p className="font-body text-sm text-secondary mb-12">Zadnja izmjena: 16.09.2026.</p>
 
         <div className="space-y-10 font-body text-on-surface-variant leading-relaxed">
 

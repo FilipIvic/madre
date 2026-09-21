@@ -19,6 +19,17 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
 const ROUTES = ["/", "/rezervacija", "/politika-privatnosti", "/uvjeti-koristenja"];
+const SITE = "https://madrebistro.netlify.app";
+
+/**
+ * Each page's own address for <link rel="canonical"> — index.html points at the home page,
+ * which would tell Google the legal pages are duplicates of it. Netlify serves prerendered
+ * pages with a trailing slash (it redirects /page to /page/), so that's the real URL.
+ * The reservation page is the home page with the modal open, so it keeps the home canonical.
+ */
+function canonicalFor(route) {
+  return route === "/" || route === "/rezervacija" ? SITE : `${SITE}${route}/`;
+}
 
 const MIME = {
   ".html": "text/html",
@@ -99,14 +110,15 @@ async function main() {
       });
 
       // Undo what ran in the browser so the saved HTML behaves like index.html: the font
-      // stylesheet goes back to non-blocking preload, and the analytics tag (added on load)
+      // stylesheet goes back to non-blocking preload, the analytics tag (added on load)
       // is removed so it isn't loaded twice, and the scroll lock below is reset.
-      await page.evaluate(() => {
+      await page.evaluate((canonical) => {
+        document.querySelector('link[rel="canonical"]')?.setAttribute("href", canonical);
         document.querySelectorAll('link[as="style"][rel="stylesheet"]').forEach((link) => (link.rel = "preload"));
         // The reservation modal locks scrolling while open; the static page must never ship locked.
         document.body.removeAttribute("style");
         document.querySelectorAll('script[src*="googletagmanager.com"], script[src*="google-analytics.com"]').forEach((s) => s.remove());
-      });
+      }, canonicalFor(route));
 
       const html = "<!doctype html>\n" + (await page.evaluate(() => document.documentElement.outerHTML));
       const outDir = route === "/" ? DIST : join(DIST, route);
