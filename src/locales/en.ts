@@ -43,7 +43,7 @@ const en = {
       soup: { name: "Rooster soup with homemade manistra", desc: "rooster • carrot • homemade pasta" },
       njoki: { name: "Gnocchi alla pašticada", desc: "homemade gnocchi • pulled beef • pašticada sauce • Grana Padano" },
       tingul: { name: "Chicken tingul with homemade tagliatelle", desc: "boneless chicken • prošek • homemade tagliatelle" },
-      hake: { name: "Breaded hake with potato and caper salad", desc: "hake fillet • batter • potato • red onion • capers" },
+      fish: { name: "Breaded fish with potato and caper salad", desc: "fish fillet • batter • potato • red onion • capers" },
       chickpeas: { name: "Creamy chickpeas with chicken and rigatoni", desc: "chickpeas • carrot • sour cream • homemade rigatoni" },
       brownie: { name: "Chocolate brownie with meringue", desc: "chocolate • butter • sugar • eggs" },
       tiramisu: { name: "Tiramisu", desc: "ladyfingers • coffee • mascarpone" },

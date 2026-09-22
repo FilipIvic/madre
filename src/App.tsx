@@ -380,7 +380,7 @@ const About = () => {
 
 const dailySpecials = [
   { group: "dailyStarter", items: [{ key: "soup", price: 6 }] },
-  { group: "dailyMains", items: [{ key: "njoki", price: 19 }, { key: "tingul", price: 14 }, { key: "hake", price: 15 }, { key: "chickpeas", price: 10 }] },
+  { group: "dailyMains", items: [{ key: "njoki", price: 19 }, { key: "tingul", price: 14 }, { key: "fish", price: 15 }, { key: "chickpeas", price: 10 }] },
   { group: "dailyDessert", items: [{ key: "brownie", price: 7 }, { key: "tiramisu", price: 6 }] },
 ];
 

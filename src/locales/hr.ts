@@ -45,7 +45,7 @@ const hr = {
       soup: { name: "Juha od pivca sa domaćom manistricom", desc: "pivac • mrkva • domaća tjestenina" },
       njoki: { name: "Njoki alla pašticada", desc: "domaći njoki • trgana junetina • umak pašticade • listići Grana Padano" },
       tingul: { name: "Tingul od zabataka i domaće tagliatelle", desc: "piletina bez kosti • prošek • domaće tagliatelle" },
-      hake: { name: "Pohani oslić sa salatom od krumpira i kapara", desc: "file oslića • lijevano tijesto • krumpir • ljubičasti luk • plod kapara" },
+      fish: { name: "Pohana riba sa salatom od krumpira i kapara", desc: "riblji file • lijevano tijesto • krumpir • ljubičasti luk • plod kapara" },
       chickpeas: { name: "Kremasti slanutak sa piletinom i rigatonima", desc: "slanutak • mrkva • kiselo vrhnje • domaći rigatoni" },
       brownie: { name: "Čoko brownie s meringom", desc: "čokolada • maslac • šećer • jaja" },
       tiramisu: { name: "Tiramisu", desc: "piškote • kava • mascarpone" },
