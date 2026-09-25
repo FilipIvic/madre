@@ -1,15 +1,9 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '.'),
-    },
-  },
   server: {
     // In dev, forward /api/* to `netlify functions:serve` (see `npm run dev:api`).
     // We don't run the site through `netlify dev`: its SPA rewrite (/* → /index.html)

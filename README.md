@@ -13,7 +13,6 @@ Built with React, TypeScript, Vite, and Tailwind CSS.
 | [TypeScript](https://www.typescriptlang.org) | Type safety |
 | [Vite](https://vitejs.dev) | Build tool & dev server |
 | [Tailwind CSS v4](https://tailwindcss.com) | Styling |
-| [Framer Motion](https://motion.dev) | Animations |
 | [React Router](https://reactrouter.com) | Page routing |
 | [Lucide React](https://lucide.dev) | Icons |
 | [Netlify Functions](https://docs.netlify.com/functions/overview/) | Reservation API |
@@ -59,22 +58,11 @@ npm test
 
 ---
 
-## Adding Your Images
+## Images
 
-Place your images in the `public/images/` folder with these exact names:
-
-| File | Used in |
-|---|---|
-| `hero.jpg` | Hero section background |
-| `about-main.jpg` | About section — main photo |
-| `about-inset.jpg` | About section — small inset photo |
-| `jelo-1.jpg` | Menu — featured dish |
-| `jelo-2.jpg` | Menu — second dish |
-| `jelo-3.jpg` | Menu — third dish |
-| `interijer.jpg` | Contact section |
-| `galerija/<name>.webp` | Gallery — named after the dish or spot (e.g. `juha-od-buce.webp`); the list and which ones are dishes live in `Gallery` in `src/App.tsx` |
-
-Supported formats: `.jpg`, `.jpeg`, `.png`, `.webp`
+Photos live in `public/images/` as `.webp`, with a `-sm` variant for the large ones so
+phones download less. Each section in `src/App.tsx` references its files by name; the
+gallery list, and which entries are dishes, is the `galleryImages` array in `Gallery`.
 
 ---
 
@@ -84,9 +72,22 @@ Supported formats: `.jpg`, `.jpeg`, `.png`, `.webp`
 npm run build
 ```
 
-Output is in the `dist/` folder — upload this to any static hosting provider.
+Output is in the `dist/` folder. Netlify runs this on every push to `main`.
+
+## Languages
+
+Croatian is the default; the HR/EN switch in the navbar remembers the choice. Text lives in
+`src/locales/hr.ts` and `src/locales/en.ts`, read through the small `useTranslation` hook in
+`src/i18n.ts` (no library). Every key must exist in both files.
 
 ---
+
+## Daily specials
+
+The dishes under "Dnevna jela" come from `src/dailySpecials.json`, one entry per dish with its
+price and Croatian and English text. To change the menu, edit that file on GitHub (open it,
+click the pencil, commit) and set `"updated"` to today's date; Netlify redeploys on the commit
+and the page shows the date next to the specials.
 
 ## Reservations
 
@@ -129,10 +130,16 @@ ahead people can book — live in one file: `netlify/lib/config.ts`.
 ├── src/
 │   ├── App.tsx          # Main page with all sections
 │   ├── ReservationForm.tsx  # Booking form inside the reservation modal
+│   ├── CancelReservation.tsx  # /otkazivanje, opened from the confirmation email
+│   ├── CookieConsent.tsx    # Analytics consent banner
 │   ├── PrivacyPolicy.tsx
 │   ├── TermsOfService.tsx
+│   ├── Reveal.tsx       # Scroll-in fade used by the sections
+│   ├── dailySpecials.json   # ← the daily menu, editable on GitHub
+│   ├── i18n.ts          # useTranslation hook (HR/EN)
+│   ├── locales/         # hr.ts, en.ts — all site text
 │   ├── main.tsx         # App entry point & routing
-│   └── index.css        # Global styles & theme colors
+│   └── index.css        # Global styles, theme colors, animations
 ├── index.html
 ├── netlify.toml         # Build, functions and /api routing
 └── vite.config.ts

@@ -4,7 +4,8 @@
  */
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import Reveal from "./Reveal";
+import dailySpecials from "./dailySpecials.json";
 import {
   MapPin,
   Phone,
@@ -17,8 +18,8 @@ import {
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "./i18n";
 import ReservationForm from "./ReservationForm";
-import { useTranslation } from "react-i18next";
 
 // --- Language Switcher ---
 
@@ -101,20 +102,11 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
       onClick={onClose}
     >
       {/* Backdrop */}
-      <motion.div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      />
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in motion-reduce:animate-none" />
 
       {/* Card */}
-      <motion.div
-        className="relative bg-surface rounded-t-3xl sm:rounded-2xl shadow-2xl px-6 pt-8 pb-0 sm:p-8 w-full max-w-lg max-h-[92svh] sm:max-h-[90vh] overflow-y-auto overflow-x-hidden overscroll-contain"
-        initial={{ opacity: 0, scale: 0.96, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 40 }}
-        transition={{ type: "spring", duration: 0.4 }}
+      <div
+        className="relative bg-surface rounded-t-3xl sm:rounded-2xl shadow-2xl px-6 pt-8 pb-0 sm:p-8 w-full max-w-lg max-h-[92svh] sm:max-h-[90vh] overflow-y-auto overflow-x-hidden overscroll-contain animate-rise-in motion-reduce:animate-none"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -139,7 +131,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
         <p className="font-body text-xs text-secondary text-center mt-4 sm:mt-6 pb-6 sm:pb-0 opacity-70">
           {t("modal.hours")}
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 };
@@ -215,11 +207,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-surface border-b border-surface-container-high p-8 flex flex-col gap-6"
-        >
+        <div className="md:hidden bg-surface border-b border-surface-container-high p-8 flex flex-col gap-6 animate-drop-in motion-reduce:animate-none">
           {navItems.map((item) => (
             <a
               key={item.href}
@@ -237,7 +225,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
           <button type="button" onClick={() => { setMobileMenuOpen(false); onReserve(); }} className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-bold text-lg">
             {t("nav.reserve")}
           </button>
-        </motion.div>
+        </div>
       )}
     </nav>
   );
@@ -274,7 +262,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/35"></div>
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
-        <motion.div
+        <div
           // No entrance animation here: this text is the page's largest paint, and fading it
           // in from opacity 0 made Google measure it only after JavaScript loaded.
           className="max-w-2xl"
@@ -296,7 +284,7 @@ const Hero = () => {
               {t("hero.viewMenu")}
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -310,12 +298,7 @@ const About = () => {
     <section id="about" className="py-20 md:py-32 bg-surface">
       <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
         <div className="relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="aspect-[4/5] bg-surface-container rounded-lg overflow-hidden relative z-10"
-          >
+          <Reveal from="scale" className="aspect-[4/5] bg-surface-container rounded-lg overflow-hidden relative z-10">
             <img
               alt="Madre bistro"
               className="w-full h-full object-cover"
@@ -325,12 +308,10 @@ const About = () => {
               loading="lazy"
               decoding="async"
             />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+          </Reveal>
+          <Reveal
+            from="right"
+            delay={0.3}
             className="absolute -bottom-12 -right-12 w-2/3 aspect-square bg-surface-container-high rounded-lg overflow-hidden border-8 border-surface z-20 hidden md:block"
           >
             <img
@@ -340,7 +321,7 @@ const About = () => {
               loading="lazy"
               decoding="async"
             />
-          </motion.div>
+          </Reveal>
         </div>
         <div className="space-y-8">
           <h2 className="font-headline text-5xl text-primary leading-tight">{t("about.headline")}</h2>
@@ -378,20 +359,19 @@ const About = () => {
   );
 };
 
-const dailySpecials = [
-  { group: "dailyStarter", items: [{ key: "soup", price: 6 }] },
-  { group: "dailyMains", items: [{ key: "njoki", price: 19 }, { key: "tingul", price: 14 }, { key: "fish", price: 15 }, { key: "chickpeas", price: 10 }] },
-  { group: "dailyDessert", items: [{ key: "brownie", price: 7 }, { key: "tiramisu", price: 6 }] },
-];
-
+// The dishes themselves live in src/dailySpecials.json so a price or a dish can be
+// changed on GitHub without touching code.
 const DailySpecials = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language.startsWith("hr") ? "hr" : "en";
+  const updated = new Date(dailySpecials.updated).toLocaleDateString(lang === "hr" ? "hr-HR" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
   return (
-    <motion.div
+    <Reveal
       id="dnevna-jela"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
       className="md:col-span-12 bg-card rounded-xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 group"
     >
       <div className="md:col-span-5 h-72 md:h-auto overflow-hidden">
@@ -411,28 +391,30 @@ const DailySpecials = () => {
           <Clock size={16} /> {t("menu.dailyHours")}
         </p>
         <div className="space-y-6">
-          {dailySpecials.map((section) => (
+          {dailySpecials.groups.map((section) => (
             <div key={section.group}>
               <h4 className="font-body font-bold text-xs uppercase tracking-widest text-tertiary mb-3">
                 {t(`menu.${section.group}`)}
               </h4>
               <div className="space-y-3">
                 {section.items.map((item) => (
-                  <div key={item.key}>
+                  <div key={item.hr.name}>
                     <div className="flex justify-between items-baseline gap-4">
-                      <p className="font-headline text-lg">{t(`menu.daily.${item.key}.name`)}</p>
+                      <p className="font-headline text-lg">{item[lang].name}</p>
                       <span className="font-headline text-tertiary whitespace-nowrap">€{item.price}</span>
                     </div>
-                    <p className="text-sm text-on-surface-variant italic">{t(`menu.daily.${item.key}.desc`)}</p>
+                    <p className="text-sm text-on-surface-variant italic">{item[lang].desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
-        <p className="text-xs text-secondary mt-8 opacity-80">{t("menu.dailyNote")}</p>
+        <p className="text-xs text-secondary mt-8 opacity-80">
+          {t("menu.dailyUpdated", { date: updated })} · {t("menu.dailyNote")}
+        </p>
       </div>
-    </motion.div>
+    </Reveal>
   );
 };
 
@@ -448,12 +430,7 @@ const Menu = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Main Feature */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-7 bg-card rounded-xl overflow-hidden shadow-sm group"
-          >
+          <Reveal className="md:col-span-7 bg-card rounded-xl overflow-hidden shadow-sm group">
             <div className="h-[400px] overflow-hidden">
               <img
                 alt={t("menu.dish1Name")}
@@ -472,16 +449,11 @@ const Menu = () => {
               </div>
               <p className="text-on-surface-variant leading-relaxed">{t("menu.dish1Desc")}</p>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Side Dishes Stack */}
           <div className="md:col-span-5 flex flex-col gap-6">
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-card rounded-xl overflow-hidden shadow-sm flex group h-full"
-            >
+            <Reveal from="right" className="bg-card rounded-xl overflow-hidden shadow-sm flex group h-full">
               <div className="w-1/3 overflow-hidden">
                 <img
                   alt={t("menu.dish2Name")}
@@ -496,15 +468,9 @@ const Menu = () => {
                 <p className="text-sm text-on-surface-variant">{t("menu.dish2Desc")}</p>
                 <span className="mt-4 font-headline text-tertiary">€21</span>
               </div>
-            </motion.div>
+            </Reveal>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-card rounded-xl overflow-hidden shadow-sm flex flex-row-reverse group h-full"
-            >
+            <Reveal from="right" delay={0.1} className="bg-card rounded-xl overflow-hidden shadow-sm flex flex-row-reverse group h-full">
               <div className="w-1/3 overflow-hidden">
                 <img
                   alt={t("menu.dish3Name")}
@@ -519,7 +485,7 @@ const Menu = () => {
                 <p className="text-sm text-on-surface-variant">{t("menu.dish3Desc")}</p>
                 <span className="mt-4 font-headline text-tertiary">€19</span>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
 
           {/* Daily Specials */}
@@ -593,12 +559,11 @@ const Gallery = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {galleryImages.map((image, index) => (
-            <motion.figure
+            <Reveal
+              as="figure"
               key={image.src}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: (index % 3) * 0.08 }}
+              from="scale"
+              delay={(index % 3) * 0.08}
               className="relative aspect-square overflow-hidden rounded-xl group"
             >
               <img
@@ -620,7 +585,7 @@ const Gallery = () => {
                   </span>
                 </figcaption>
               )}
-            </motion.figure>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -769,9 +734,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <AnimatePresence>
-        {reservationOpen && <ReservationModal onClose={closeReservation} />}
-      </AnimatePresence>
+      {reservationOpen && <ReservationModal onClose={closeReservation} />}
       <Navbar onReserve={openReservation} />
       <main>
         <Hero />

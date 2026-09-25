@@ -1,14 +1,14 @@
-import { StrictMode, useEffect, useRef } from 'react';
+import { StrictMode, Suspense, lazy, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
-import { MotionConfig } from 'motion/react';
 import App from './App.tsx';
-import PrivacyPolicy from './PrivacyPolicy.tsx';
-import TermsOfService from './TermsOfService.tsx';
-import CancelReservation from './CancelReservation.tsx';
 import CookieConsent from './CookieConsent.tsx';
-import './i18n';
 import './index.css';
+
+// Rarely opened, so their code is fetched on demand instead of with the home page.
+const PrivacyPolicy = lazy(() => import('./PrivacyPolicy.tsx'));
+const TermsOfService = lazy(() => import('./TermsOfService.tsx'));
+const CancelReservation = lazy(() => import('./CancelReservation.tsx'));
 
 /**
  * Start each new page at the top — the router keeps the old scroll position otherwise,
@@ -36,9 +36,9 @@ function ScrollToTop() {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MotionConfig reducedMotion="user">
-      <BrowserRouter>
-        <ScrollToTop />
+    <BrowserRouter>
+      <ScrollToTop />
+      <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/rezervacija" element={<App />} />
@@ -48,8 +48,8 @@ createRoot(document.getElementById('root')!).render(
           {/* Typos and old links land on the home page instead of a blank screen. */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <CookieConsent />
-      </BrowserRouter>
-    </MotionConfig>
+      </Suspense>
+      <CookieConsent />
+    </BrowserRouter>
   </StrictMode>,
 );

@@ -4,8 +4,7 @@
  */
 
 import { useEffect, useState, type FormEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { motion } from "motion/react";
+import { useTranslation } from "./i18n";
 import { CalendarCheck, Loader2, Phone, Users } from "lucide-react";
 import { MAX_DAYS_AHEAD, MAX_PARTY_SIZE, RESTAURANT, isStaffEmail } from "../netlify/lib/config";
 
@@ -159,18 +158,14 @@ const ReservationForm = () => {
 
   if (done) {
     return (
-      <motion.div
-        className="text-center py-4"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-      >
+      <div className="text-center py-4 animate-pop-in motion-reduce:animate-none">
         <CalendarCheck size={44} className="mx-auto text-primary mb-5" />
         <h3 className="font-headline text-2xl text-primary mb-3">{t("reserve.successHeadline")}</h3>
         <p className="font-body text-sm text-on-surface-variant mb-2">
           {t(isStaff ? "reserve.successStaff" : "reserve.successBody", { date: prettyDate(date), time, guests })}
         </p>
         {!isStaff && <p className="font-body text-xs text-secondary opacity-80">{t("reserve.successHold")}</p>}
-      </motion.div>
+      </div>
     );
   }
 

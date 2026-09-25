@@ -1,15 +1,12 @@
 {
-  "name": "react-example",
+  "name": "madre-bistro",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && (puppeteer browsers install chrome || echo '[prerender] Chrome install failed') && node scripts/prerender.mjs",
-    "build:client": "vite build",
-    "prerender": "node scripts/prerender.mjs",
+    "build": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "dev:api": "npx -y netlify-cli@27 functions:serve --port 3001 & vite --port=3000 --host=0.0.0.0",
     "test": "esbuild netlify/lib/rules.test.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/madre-test.mjs --external:google-auth-library --log-level=error && node node_modules/.cache/madre-test.mjs"
@@ -18,14 +15,10 @@
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "google-auth-library": "^10.9.1",
-    "i18next": "^26.0.2",
-    "i18next-browser-languagedetector": "^8.2.1",
     "lucide-react": "^0.546.0",
-    "motion": "^12.23.24",
     "nodemailer": "^10.0.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-i18next": "^17.0.1",
     "react-router-dom": "^7.13.2",
     "vite": "^6.2.0"
   },
@@ -33,7 +26,6 @@
     "@types/node": "^22.14.0",
     "@types/nodemailer": "^8.0.2",
     "esbuild": "^0.28.2",
-    "puppeteer": "^25.1.0",
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

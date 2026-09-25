@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "./i18n";
 import { ArrowLeft, CalendarX, Loader2, Phone } from "lucide-react";
 
 const PHONE = "+385953545315";
@@ -63,7 +63,7 @@ export default function CancelReservation() {
     t("cancel.summary", { name: b.name, guests: b.guests, date: prettyDate(b.date), time: b.time });
 
   const errorText = (code: string) =>
-    t(`cancel.errors.${code}`, { defaultValue: t(`reserve.errors.${code}`, t("reserve.errors.SERVER_ERROR")) });
+    t(`cancel.errors.${code}`, t(`reserve.errors.${code}`, t("reserve.errors.SERVER_ERROR")));
 
   return (
     <div className="min-h-screen bg-surface">
