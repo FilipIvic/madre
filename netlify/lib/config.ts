@@ -46,7 +46,7 @@ export const BLOCK_KEYWORD = "ZATVORENO";
 export const APP_TAG = "madre-reservations";
 
 /** Public site address for links in emails. Netlify's own URL variable wins when set (e.g. a custom domain). */
-export const SITE_URL = "https://madrebistro.netlify.app";
+export const SITE_URL = "https://madre-bistro.com";
 
 export const RESTAURANT = {
   name: "Madre Bistro",

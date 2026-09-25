@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
 const ROUTES = ["/", "/rezervacija", "/politika-privatnosti", "/uvjeti-koristenja"];
-const SITE = "https://madrebistro.netlify.app";
+const SITE = "https://madre-bistro.com";
 
 /**
  * Each page's own address for <link rel="canonical"> — index.html points at the home page,

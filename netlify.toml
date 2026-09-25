@@ -17,6 +17,14 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Send the old Netlify address to the real domain so Google and old links
+# settle on one canonical site.
+[[redirects]]
+  from = "https://madrebistro.netlify.app/*"
+  to = "https://madre-bistro.com/:splat"
+  status = 301
+  force = true
+
 # Reservation API. Must come BEFORE the SPA fallback below — Netlify applies
 # the first matching rule, so without this /api/* would render index.html.
 [[redirects]]
