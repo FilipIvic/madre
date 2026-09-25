@@ -3,7 +3,10 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "22"
+  # Pinned to an exact release. A bare "22" resolves to the newest 22.x, and when
+  # that is only days old Netlify has no prebuilt binary and compiles Node from
+  # source, which blows the build timeout.
+  NODE_VERSION = "22.23.2"
   # A public address shown on the site itself (footer, legal pages, structured
   # data), so the secrets scanner must not treat it as a secret.
   SECRETS_SCAN_OMIT_KEYS = "OWNER_EMAIL"
