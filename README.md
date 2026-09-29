@@ -87,7 +87,8 @@ Croatian is the default; the HR/EN switch in the navbar remembers the choice. Te
 The dishes under "Dnevna jela" come from `src/dailySpecials.json`, one entry per dish with its
 price and Croatian and English text. To change the menu, edit that file on GitHub (open it,
 click the pencil, commit) and set `"updated"` to today's date; Netlify redeploys on the commit
-and the page shows the date next to the specials.
+and the page shows the date next to the specials. The build also copies the dishes into the
+structured data in `index.html` (for Google), so there is nothing else to update.
 
 ## Reservations
 

@@ -79,8 +79,10 @@
         href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;700&display=swap"
       />
     </noscript>
-    <link rel="icon" type="image/png" href="/images/favicon.png" />
-    <link rel="apple-touch-icon" href="/images/favicon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#9a4025" />
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
@@ -123,6 +125,17 @@
       content="https://madre-bistro.com/images/og-image.jpg"
     />
 
+    <!-- Site name Google shows above the result instead of the bare domain -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Madre Bistro",
+        "alternateName": ["Madre Bistro Split", "Madre"],
+        "url": "https://madre-bistro.com/"
+      }
+    </script>
+
     <!-- Structured data (Google rich results) -->
     <script type="application/ld+json">
       {
@@ -134,7 +147,7 @@
         "telephone": "+385953545315",
         "email": "madre.split@gmail.com",
         "image": "https://madre-bistro.com/images/hero.jpg",
-        "logo": "https://madre-bistro.com/images/favicon.png",
+        "logo": "https://madre-bistro.com/images/logo.png",
         "servesCuisine": [
           "Tjestenina",
           "Manistra",
@@ -197,78 +210,7 @@
             {
               "@type": "MenuSection",
               "name": "Dnevna jela (uto–ned, 11–18 h)",
-              "hasMenuItem": [
-                {
-                  "@type": "MenuItem",
-                  "name": "Juha od pivca sa domaćom manistricom",
-                  "description": "pivac, mrkva, domaća tjestenina",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "6",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Njoki alla pašticada",
-                  "description": "domaći njoki, trgana junetina, umak pašticade, listići Grana Padano",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "19",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Tingul od zabataka i domaće tagliatelle",
-                  "description": "piletina bez kosti, prošek, domaće tagliatelle",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "14",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Pohana riba sa salatom od krumpira i kapara",
-                  "description": "riblji file, lijevano tijesto, krumpir, ljubičasti luk, plod kapara",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "15",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Kremasti slanutak sa piletinom i rigatonima",
-                  "description": "slanutak, mrkva, kiselo vrhnje, domaći rigatoni",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "10",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Čoko brownie s meringom",
-                  "description": "čokolada, maslac, šećer, jaja",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "7",
-                    "priceCurrency": "EUR"
-                  }
-                },
-                {
-                  "@type": "MenuItem",
-                  "name": "Tiramisu",
-                  "description": "piškote, kava, mascarpone",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "6",
-                    "priceCurrency": "EUR"
-                  }
-                }
-              ]
+              "hasMenuItem": "__DAILY_SPECIALS__"
             }
           ]
         },
