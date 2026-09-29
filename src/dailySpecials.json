@@ -43,6 +43,11 @@
           "price": 7,
           "hr": { "name": "Mini pita od jabuka i sladoled od vanilije", "desc": "prhko tijesto • jabuka • cimet • sladoled" },
           "en": { "name": "Mini apple pie with vanilla ice cream", "desc": "shortcrust pastry • apple • cinnamon • ice cream" }
+        },
+        {
+          "price": 6,
+          "hr": { "name": "Tiramisu", "desc": "piškote • kava • mascarpone" },
+          "en": { "name": "Tiramisu", "desc": "ladyfingers • coffee • mascarpone" }
         }
       ]
     }
