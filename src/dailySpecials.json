@@ -1,13 +1,13 @@
 {
-  "updated": "2026-09-22",
+  "updated": "2026-09-29",
   "groups": [
     {
       "group": "dailyStarter",
       "items": [
         {
           "price": 6,
-          "hr": { "name": "Juha od pivca sa domaćom manistricom", "desc": "pivac • mrkva • domaća tjestenina" },
-          "en": { "name": "Rooster soup with homemade manistra", "desc": "rooster • carrot • homemade pasta" }
+          "hr": { "name": "Goveđa juha s mesom i domaćom manistrom", "desc": "govedina • mrkva • celer • domaća manistra" },
+          "en": { "name": "Beef soup with meat and homemade manistra", "desc": "beef • carrot • celery • homemade manistra pasta" }
         }
       ]
     },
@@ -20,19 +20,19 @@
           "en": { "name": "Gnocchi alla pašticada", "desc": "homemade gnocchi • pulled beef • pašticada sauce • Grana Padano" }
         },
         {
-          "price": 14,
-          "hr": { "name": "Tingul od zabataka i domaće tagliatelle", "desc": "piletina bez kosti • prošek • domaće tagliatelle" },
-          "en": { "name": "Chicken tingul with homemade tagliatelle", "desc": "boneless chicken • prošek • homemade tagliatelle" }
-        },
-        {
           "price": 15,
-          "hr": { "name": "Pohana riba sa salatom od krumpira i kapara", "desc": "riblji file • lijevano tijesto • krumpir • ljubičasti luk • plod kapara" },
-          "en": { "name": "Breaded fish with potato and caper salad", "desc": "fish fillet • batter • potato • red onion • capers" }
+          "hr": { "name": "Palačinke s mesom", "desc": "palačinke • bolognese • bešamel" },
+          "en": { "name": "Savoury crêpes with meat", "desc": "crêpes • bolognese • béchamel" }
         },
         {
-          "price": 10,
-          "hr": { "name": "Kremasti slanutak sa piletinom i rigatonima", "desc": "slanutak • mrkva • kiselo vrhnje • domaći rigatoni" },
-          "en": { "name": "Creamy chickpeas with chicken and rigatoni", "desc": "chickpeas • carrot • sour cream • homemade rigatoni" }
+          "price": 14,
+          "hr": { "name": "Orzo i janjetina na žlicu", "desc": "orzo • janjetina • mrkva • ružmarin • pecorino" },
+          "en": { "name": "Orzo and lamb stew", "desc": "orzo • lamb • carrot • rosemary • pecorino" }
+        },
+        {
+          "price": 14,
+          "hr": { "name": "Frigane lignje, pomfrit i tartar", "desc": "kolutići lignji • pomfrit • domaći tartar" },
+          "en": { "name": "Fried squid, fries and tartar", "desc": "squid rings • fries • homemade tartar" }
         }
       ]
     },
@@ -41,13 +41,8 @@
       "items": [
         {
           "price": 7,
-          "hr": { "name": "Čoko brownie s meringom", "desc": "čokolada • maslac • šećer • jaja" },
-          "en": { "name": "Chocolate brownie with meringue", "desc": "chocolate • butter • sugar • eggs" }
-        },
-        {
-          "price": 6,
-          "hr": { "name": "Tiramisu", "desc": "piškote • kava • mascarpone" },
-          "en": { "name": "Tiramisu", "desc": "ladyfingers • coffee • mascarpone" }
+          "hr": { "name": "Mini pita od jabuka i sladoled od vanilije", "desc": "prhko tijesto • jabuka • cimet • sladoled" },
+          "en": { "name": "Mini apple pie with vanilla ice cream", "desc": "shortcrust pastry • apple • cinnamon • ice cream" }
         }
       ]
     }
