@@ -11,6 +11,7 @@ import {
   Phone,
   Clock,
   ArrowRight,
+  Bike,
   Instagram,
   Menu as MenuIcon,
   Moon,
@@ -20,6 +21,7 @@ import {
 import { useState, useEffect } from "react";
 import { useTranslation } from "./i18n";
 import ReservationForm from "./ReservationForm";
+import WoltLogo, { WOLT_URL } from "./WoltLogo";
 
 // --- Language Switcher ---
 
@@ -54,6 +56,7 @@ const LanguageSwitcher = ({ light = false }: { light?: boolean }) => {
 };
 
 const ThemeToggle = ({ light = false }: { light?: boolean }) => {
+  const { t } = useTranslation();
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
 
   const toggle = () => {
@@ -71,7 +74,7 @@ const ThemeToggle = ({ light = false }: { light?: boolean }) => {
     <button
       type="button"
       onClick={toggle}
-      aria-label={dark ? "Light mode" : "Dark mode"}
+      aria-label={dark ? t("nav.lightMode") : t("nav.darkMode")}
       className={`p-1.5 rounded-full transition-colors ${light ? "text-white/90 hover:text-white" : "text-secondary hover:text-primary"}`}
     >
       {dark ? <Sun size={18} /> : <Moon size={18} />}
@@ -115,7 +118,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t("nav.close")}
           className="absolute top-3 right-3 p-2 text-secondary hover:text-primary transition-colors"
         >
           <X size={20} />
@@ -199,7 +202,7 @@ const Navbar = ({ onReserve }: { onReserve: () => void }) => {
               {t("nav.reserve")}
             </button>
           )}
-          <button type="button" aria-label="Menu" aria-expanded={mobileMenuOpen} className={`p-1 transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button type="button" aria-label={t("nav.openMenu")} aria-expanded={mobileMenuOpen} className={`p-1 transition-colors ${isScrolled ? "text-primary" : "text-white"}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X /> : <MenuIcon />}
           </button>
         </div>
@@ -368,6 +371,7 @@ const DailySpecials = () => {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   });
   return (
     <Reveal
@@ -376,7 +380,7 @@ const DailySpecials = () => {
     >
       <div className="md:col-span-5 h-72 md:h-auto overflow-hidden">
         <img
-          alt={t("menu.daily.njoki.name")}
+          alt={t("gallery.alt11")}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           src="/images/njoki-pasticada.webp"
@@ -401,7 +405,7 @@ const DailySpecials = () => {
                   <div key={item.hr.name}>
                     <div className="flex justify-between items-baseline gap-4">
                       <p className="font-headline text-lg">{item[lang].name}</p>
-                      <span className="font-headline text-tertiary whitespace-nowrap">€{item.price}</span>
+                      <span className="font-headline text-tertiary whitespace-nowrap">{item.price} €</span>
                     </div>
                     <p className="text-sm text-on-surface-variant italic">{item[lang].desc}</p>
                   </div>
@@ -445,7 +449,7 @@ const Menu = () => {
             <div className="p-8">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-headline text-3xl text-primary">{t("menu.dish1Name")}</h3>
-                <span className="font-headline text-xl text-tertiary">€20</span>
+                <span className="font-headline text-xl text-tertiary">20 €</span>
               </div>
               <p className="text-on-surface-variant leading-relaxed">{t("menu.dish1Desc")}</p>
             </div>
@@ -466,7 +470,7 @@ const Menu = () => {
               <div className="w-2/3 p-6 flex flex-col justify-center">
                 <h4 className="font-headline text-xl mb-2">{t("menu.dish2Name")}</h4>
                 <p className="text-sm text-on-surface-variant">{t("menu.dish2Desc")}</p>
-                <span className="mt-4 font-headline text-tertiary">€21</span>
+                <span className="mt-4 font-headline text-tertiary">21 €</span>
               </div>
             </Reveal>
 
@@ -483,7 +487,7 @@ const Menu = () => {
               <div className="w-2/3 p-6 flex flex-col justify-center text-right">
                 <h4 className="font-headline text-xl mb-2">{t("menu.dish3Name")}</h4>
                 <p className="text-sm text-on-surface-variant">{t("menu.dish3Desc")}</p>
-                <span className="mt-4 font-headline text-tertiary">€19</span>
+                <span className="mt-4 font-headline text-tertiary">19 €</span>
               </div>
             </Reveal>
           </div>
@@ -492,7 +496,7 @@ const Menu = () => {
           <DailySpecials />
         </div>
 
-        <div className="text-center mt-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-12">
           <a
             href="https://madre-menu.netlify.app/"
             target="_blank"
@@ -500,6 +504,15 @@ const Menu = () => {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-lg font-bold transition-all hover:shadow-xl hover:-translate-y-1"
           >
             {t("menu.fullMenu")} <ArrowRight size={18} />
+          </a>
+          <a
+            href={WOLT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("menu.orderDeliveryLabel")}
+            className="inline-flex items-center gap-3 bg-card text-on-surface border border-surface-container-high px-8 py-4 rounded-lg font-bold shadow-sm transition-all hover:shadow-xl hover:-translate-y-1"
+          >
+            {t("menu.orderDelivery")} <WoltLogo className="h-5 text-wolt" />
           </a>
         </div>
       </div>
@@ -651,6 +664,17 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="space-y-4 md:col-span-2">
+                <div className="flex items-center gap-3 text-primary">
+                  <Bike size={20} />
+                  <h3 className="font-bold uppercase tracking-widest text-xs">{t("contact.deliveryLabel")}</h3>
+                </div>
+                <p className="text-on-surface-variant">{t("contact.deliveryBody")}</p>
+                <a href={WOLT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+                  {t("contact.orderWolt")} <ArrowRight size={16} />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -721,7 +745,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   // The modal lives at /rezervacija so it can be linked to directly (Google Business Profile etc.).
-  // Netlify redirects it to /rezervacija/ because the prerendered page is a folder, so allow the slash.
+  // Older links may end in a slash (/rezervacija/), so allow it.
   const reservationOpen = location.pathname.replace(/\/+$/, "") === "/rezervacija";
 
   const openReservation = () => navigate("/rezervacija", { state: FROM_SITE });
