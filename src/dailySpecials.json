@@ -1,13 +1,13 @@
 {
-  "updated": "2026-09-29",
+  "updated": "2026-10-05",
   "groups": [
     {
       "group": "dailyStarter",
       "items": [
         {
           "price": 6,
-          "hr": { "name": "Goveđa juha s mesom i domaćom manistrom", "desc": "govedina • mrkva • celer • domaća manistra" },
-          "en": { "name": "Beef soup with meat and homemade manistra", "desc": "beef • carrot • celery • homemade manistra pasta" }
+          "hr": { "name": "Juha od brokule s feta sirom i listićima badema", "desc": "brokula • bademi • feta sir • vrhnje" },
+          "en": { "name": "Broccoli soup with feta and toasted almonds", "desc": "broccoli • almonds • feta cheese • cream" }
         }
       ]
     },
@@ -21,18 +21,13 @@
         },
         {
           "price": 15,
-          "hr": { "name": "Palačinke s mesom", "desc": "palačinke • bolognese • bešamel" },
-          "en": { "name": "Savoury crêpes with meat", "desc": "crêpes • bolognese • béchamel" }
+          "hr": { "name": "Pljukanci s gorgonzolom i piletinom", "desc": "domaća tjestenina • gorgonzola • piletina" },
+          "en": { "name": "Pljukanci with gorgonzola and chicken", "desc": "homemade pasta • gorgonzola • chicken" }
         },
         {
           "price": 14,
-          "hr": { "name": "Orzo i janjetina na žlicu", "desc": "orzo • janjetina • mrkva • ružmarin • pecorino" },
-          "en": { "name": "Orzo and lamb stew", "desc": "orzo • lamb • carrot • rosemary • pecorino" }
-        },
-        {
-          "price": 14,
-          "hr": { "name": "Frigane lignje, pomfrit i tartar", "desc": "kolutići lignji • pomfrit • domaći tartar" },
-          "en": { "name": "Fried squid, fries and tartar", "desc": "squid rings • fries • homemade tartar" }
+          "hr": { "name": "Arancini s kozicama", "desc": "riža • kozice • majoneza od češnjaka" },
+          "en": { "name": "Shrimp arancini", "desc": "rice • shrimp • garlic mayonnaise" }
         }
       ]
     },
@@ -41,8 +36,8 @@
       "items": [
         {
           "price": 7,
-          "hr": { "name": "Mini pita od jabuka i sladoled od vanilije", "desc": "prhko tijesto • jabuka • cimet • sladoled" },
-          "en": { "name": "Mini apple pie with vanilla ice cream", "desc": "shortcrust pastry • apple • cinnamon • ice cream" }
+          "hr": { "name": "Baskijski cheesecake s karamelom", "desc": "krem sir • jaja • umak od karamele" },
+          "en": { "name": "Basque cheesecake with caramel", "desc": "cream cheese • eggs • caramel sauce" }
         },
         {
           "price": 6,
