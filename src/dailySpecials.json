@@ -1,13 +1,13 @@
 {
-  "updated": "2026-10-12",
+  "updated": "2026-10-21",
   "groups": [
     {
       "group": "dailyStarter",
       "items": [
         {
           "price": 6,
-          "hr": { "name": "Krem juha od povrća", "desc": "brokula • cvjetača • tikvica • krutoni • vrhnje" },
-          "en": { "name": "Cream of vegetable soup", "desc": "broccoli • cauliflower • zucchini • croutons • cream" }
+          "hr": { "name": "Krem juha od mrkve", "desc": "mrkva • ružmarin • sjemenke suncokreta" },
+          "en": { "name": "Creamy carrot soup", "desc": "carrot • rosemary • sunflower seeds" }
         }
       ]
     },
@@ -20,19 +20,24 @@
           "en": { "name": "Gnocchi alla pašticada", "desc": "homemade gnocchi • pulled beef • pašticada sauce • Grana Padano" }
         },
         {
+          "price": 15,
+          "hr": { "name": "Bečki šnicel i restani krumpir", "desc": "svinjski but • panko mrvice • luk • krumpir" },
+          "en": { "name": "Viennese-style schnitzel with sautéed potatoes", "desc": "pork leg • panko breadcrumbs • onion • potatoes" }
+        },
+        {
+          "price": 15,
+          "hr": { "name": "Tagliatelle losos i kozice", "desc": "dimljeni losos • repovi kozica • vrhnje • parmezan" },
+          "en": { "name": "Tagliatelle with salmon and shrimp", "desc": "smoked salmon • shrimp tails • cream • Parmesan" }
+        },
+        {
+          "price": 14,
+          "hr": { "name": "Juneći gulaš na žlicu", "desc": "junetina • krumpir • luk" },
+          "en": { "name": "Beef goulash", "desc": "beef • potatoes • onion" }
+        },
+        {
           "price": 16,
-          "hr": { "name": "Tortilja i batat", "desc": "trgana svinjetina • coleslaw salata • tortilja" },
-          "en": { "name": "Tortilla with sweet potato", "desc": "pulled pork • coleslaw • tortilla" }
-        },
-        {
-          "price": 13,
-          "hr": { "name": "Leća i piletina", "desc": "leća • mrkva • piletina • kiselo vrhnje • crumble od pancete" },
-          "en": { "name": "Lentils with chicken", "desc": "lentils • carrot • chicken • sour cream • pancetta crumble" }
-        },
-        {
-          "price": 19,
-          "hr": { "name": "Buzara od dagnji i vongola", "desc": "dagnje • vongole • palenta" },
-          "en": { "name": "Mussels and clams buzara", "desc": "mussels • clams • polenta" }
+          "hr": { "name": "Lazanje bolonjez", "desc": "junetina • muškatni oraščić • bešamel umak" },
+          "en": { "name": "Lasagne bolognese", "desc": "beef • nutmeg • béchamel sauce" }
         }
       ]
     },
@@ -40,9 +45,9 @@
       "group": "dailyDessert",
       "items": [
         {
-          "price": 6,
-          "hr": { "name": "Banana bread", "desc": "banana bread • domaći džem od šljiva • slatko vrhnje" },
-          "en": { "name": "Banana bread", "desc": "banana bread • homemade plum jam • whipped cream" }
+          "price": 7,
+          "hr": { "name": "Mak torta", "desc": "mak • Plazma keks • griz • bijela čokolada" },
+          "en": { "name": "Poppy seed cake", "desc": "poppy seeds • Plazma biscuits • semolina • white chocolate" }
         },
         {
           "price": 6,
