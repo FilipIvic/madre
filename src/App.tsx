@@ -18,7 +18,7 @@ import {
   Sun,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { useTranslation } from "./i18n";
 import ReservationForm from "./ReservationForm";
 import WoltLogo, { WOLT_URL } from "./WoltLogo";
@@ -362,23 +362,49 @@ const About = () => {
   );
 };
 
-// The dishes themselves live in src/dailySpecials.json so a price or a dish can be
+const Diamond = () => <span aria-hidden="true" className="w-1.5 h-1.5 rotate-45 bg-primary shrink-0" />;
+
+// A double frame with its title set into the top border and an optional price in the
+// bottom one, after the printed lunch menu.
+const MenuFrame = ({ title, price, children }: { key?: string | number; title: string; price?: string; children: ReactNode }) => (
+  <div className={`relative border-[3px] border-double border-primary/40 rounded-lg px-5 pt-10 ${price ? "pb-12" : "pb-8"}`}>
+    <h4 className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-3 bg-card px-3 sm:px-4 font-headline sm:text-lg uppercase tracking-[0.12em] sm:tracking-[0.2em] text-primary whitespace-nowrap">
+      <Diamond /> {title} <Diamond />
+    </h4>
+    {children}
+    {price && (
+      <p className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-card px-4 font-headline text-2xl text-primary whitespace-nowrap">
+        {price}
+      </p>
+    )}
+  </div>
+);
+
+const COURSES = [
+  ["starter", "menu.dailyStarter"],
+  ["main", "menu.dailyMain"],
+  ["dessert", "menu.dailyDessert"],
+] as const;
+
+// The menus themselves live in src/dailySpecials.json so a price or a dish can be
 // changed on GitHub without touching code.
 const DailySpecials = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.startsWith("hr") ? "hr" : "en";
-  const updated = new Date(dailySpecials.updated).toLocaleDateString(lang === "hr" ? "hr-HR" : "en-GB", {
+  const locale = lang === "hr" ? "hr-HR" : "en-GB";
+  const updated = new Date(dailySpecials.updated).toLocaleDateString(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
+  const euros = (price: number) => `${price.toLocaleString(locale)} €`;
   return (
     <Reveal
       id="dnevna-jela"
-      className="md:col-span-12 bg-card rounded-xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-12 group"
+      className="md:col-span-12 bg-card rounded-xl overflow-hidden shadow-sm grid grid-cols-1 lg:grid-cols-12 group"
     >
-      <div className="md:col-span-5 h-72 md:h-auto overflow-hidden">
+      <div className="lg:col-span-4 h-72 lg:h-auto overflow-hidden">
         <img
           alt={t("gallery.alt11")}
           loading="lazy"
@@ -386,35 +412,44 @@ const DailySpecials = () => {
           src="/images/njoki-pasticada.webp"
         />
       </div>
-      <div className="md:col-span-7 p-8 md:p-10">
+      <div className="lg:col-span-8 p-6 sm:p-8 md:p-10 text-center">
         <span className="inline-block font-body text-primary-foreground bg-primary px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-4">
           {t("menu.dailyBadge")}
         </span>
         <h3 className="font-headline text-3xl text-primary mb-2">{t("menu.dailyHeadline")}</h3>
-        <p className="flex items-center gap-2 text-sm text-secondary mb-8">
-          <Clock size={16} /> {t("menu.dailyHours")}
+        <p className="text-sm text-secondary mb-12">
+          <Clock size={16} className="inline -mt-0.5 mr-2" />
+          {t("menu.dailyHours")}
         </p>
-        <div className="space-y-6">
-          {dailySpecials.groups.map((section) => (
-            <div key={section.group}>
-              <h4 className="font-body font-bold text-xs uppercase tracking-widest text-tertiary mb-3">
-                {t(`menu.${section.group}`)}
-              </h4>
-              <div className="space-y-3">
-                {section.items.map((item) => (
-                  <div key={item.hr.name}>
-                    <div className="flex justify-between items-baseline gap-4">
-                      <p className="font-headline text-lg">{item[lang].name}</p>
-                      <span className="font-headline text-tertiary whitespace-nowrap">{item.price} €</span>
-                    </div>
-                    <p className="text-sm text-on-surface-variant italic">{item[lang].desc}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-14">
+          {dailySpecials.menus.map((menu, i) => (
+            <MenuFrame key={i} title={t("menu.dailyMenuTitle", { n: i + 1 })} price={euros(menu.price)}>
+              <div className="space-y-6">
+                {COURSES.map(([course, label]) => (
+                  <div key={course}>
+                    <p className="font-body font-bold text-[0.65rem] uppercase tracking-[0.25em] text-tertiary mb-1">{t(label)}</p>
+                    <p className="font-headline text-lg">{menu[course][lang].name}</p>
+                    <p className="text-sm text-on-surface-variant italic">{menu[course][lang].desc}</p>
                   </div>
                 ))}
               </div>
-            </div>
+            </MenuFrame>
           ))}
         </div>
-        <p className="text-xs text-secondary mt-8 opacity-80">
+        <div className="mt-14">
+          <MenuFrame title={t("menu.dailyExtras")}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {dailySpecials.extras.map((item) => (
+                <div key={item.hr.name}>
+                  <p className="font-headline text-lg">{item[lang].name}</p>
+                  <p className="text-sm text-on-surface-variant italic">{item[lang].desc}</p>
+                  <p className="font-headline text-tertiary mt-1">{euros(item.price)}</p>
+                </div>
+              ))}
+            </div>
+          </MenuFrame>
+        </div>
+        <p className="text-xs text-secondary mt-10 opacity-80">
           {t("menu.dailyUpdated", { date: updated })} · {t("menu.dailyNote")}
         </p>
       </div>
@@ -652,11 +687,11 @@ const Contact = () => {
                 <div className="flex flex-col gap-2 text-on-surface-variant max-w-xs">
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.tueSun")}</p>
-                    <p>11:00 – 23:00</p>
+                    <p>12:00 – 22:00</p>
                   </div>
                   <div className="flex justify-between gap-8 text-sm opacity-80">
                     <p>{t("contact.dailyMenu")}</p>
-                    <p>11:00 – 18:00</p>
+                    <p>12:00 – 17:00</p>
                   </div>
                   <div className="flex justify-between gap-8">
                     <p>{t("contact.mon")}</p>

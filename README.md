@@ -84,11 +84,13 @@ Croatian is the default; the HR/EN switch in the navbar remembers the choice. Te
 
 ## Daily specials
 
-The dishes under "Dnevna jela" come from `src/dailySpecials.json`, one entry per dish with its
-price and Croatian and English text. To change the menu, edit that file on GitHub (open it,
-click the pencil, commit) and set `"updated"` to today's date; Netlify redeploys on the commit
-and the page shows the date next to the specials. The build also copies the dishes into the
-structured data in `index.html` (for Google), so there is nothing else to update.
+The lunch menus under "Vrime je za ručak" come from `src/dailySpecials.json`. Each entry in
+`menus` is one set menu (Meni 1, Meni 2, …) with its price and a `starter`, `main` and `dessert`;
+`extras` are the drinks under "Za gušt!". Every dish has Croatian and English text. To change the
+menu, edit that file on GitHub (open it, click the pencil, commit) and set `"updated"` to today's
+date; Netlify redeploys on the commit and the page shows the date next to the menus. The build
+also copies the menus into the structured data in `index.html` (for Google), so there is nothing
+else to update.
 
 ## Reservations
 

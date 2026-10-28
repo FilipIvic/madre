@@ -5,13 +5,13 @@
 
 /** Opening hours per weekday. 0 = Sunday, 1 = Monday, ... 6 = Saturday. */
 export const OPENING_HOURS: Record<number, { open: string; close: string } | null> = {
-  0: { open: "11:00", close: "23:00" }, // nedjelja
+  0: { open: "12:00", close: "22:00" }, // nedjelja
   1: null,                              // ponedjeljak — zatvoreno
-  2: { open: "11:00", close: "23:00" }, // utorak
-  3: { open: "11:00", close: "23:00" }, // srijeda
-  4: { open: "11:00", close: "23:00" }, // četvrtak
-  5: { open: "11:00", close: "23:00" }, // petak
-  6: { open: "11:00", close: "23:00" }, // subota
+  2: { open: "12:00", close: "22:00" }, // utorak
+  3: { open: "12:00", close: "22:00" }, // srijeda
+  4: { open: "12:00", close: "22:00" }, // četvrtak
+  5: { open: "12:00", close: "22:00" }, // petak
+  6: { open: "12:00", close: "22:00" }, // subota
 };
 
 /** Guests pick a time every this many minutes. */

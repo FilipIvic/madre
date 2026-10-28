@@ -9,15 +9,21 @@ function dailySpecialsStructuredData(): Plugin {
   return {
     name: 'daily-specials-structured-data',
     transformIndexHtml(html) {
+      type Dish = { hr: { name: string; desc: string } };
+      type Menu = { price: number; starter: Dish; main: Dish; dessert: Dish };
       const specials = JSON.parse(readFileSync('src/dailySpecials.json', 'utf8'));
-      const items = specials.groups.flatMap((g: { items: unknown[] }) => g.items).map(
-        (i: { price: number; hr: { name: string; desc: string } }) => ({
-          '@type': 'MenuItem',
-          name: i.hr.name,
-          description: i.hr.desc.replace(/ • /g, ', '),
-          offers: { '@type': 'Offer', price: String(i.price), priceCurrency: 'EUR' },
-        }),
-      );
+      const item = (name: string, description: string, price: number) => ({
+        '@type': 'MenuItem',
+        name,
+        description,
+        offers: { '@type': 'Offer', price: String(price), priceCurrency: 'EUR' },
+      });
+      const items = [
+        ...specials.menus.map((m: Menu, i: number) =>
+          item(`Meni ${i + 1}`, [m.starter, m.main, m.dessert].map((d) => d.hr.name).join(', '), m.price),
+        ),
+        ...specials.extras.map((e: Dish & { price: number }) => item(e.hr.name, e.hr.desc.replace(/ • /g, ', '), e.price)),
+      ];
       return html.replace('"__DAILY_SPECIALS__"', JSON.stringify(items));
     },
   };

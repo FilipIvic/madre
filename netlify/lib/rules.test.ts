@@ -29,9 +29,9 @@ eq("formatDateHr", formatDateHr("2026-09-20"), "20.09.2026.");
 
 // --- slots -----------------------------------------------------------------
 const wed = slotsForDate("2026-09-16");
-eq("first slot", wed[0], "11:00");
-eq("last slot (close 23:00 - 60min)", wed[wed.length - 1], "22:00");
-eq("slot count", wed.length, 23);
+eq("first slot", wed[0], "12:00");
+eq("last slot (close 22:00 - 60min)", wed[wed.length - 1], "21:00");
+eq("slot count", wed.length, 19);
 eq("Monday closed", slotsForDate("2026-09-14"), []);
 
 // --- capacity --------------------------------------------------------------
@@ -98,8 +98,8 @@ const closed: CalendarEvent = {
   start: { date: "2026-09-16" },
   end: { date: "2026-09-17" },
 };
-eq("all-day block at 11:00", remainingSeats("2026-09-16", "11:00", [closed]), 0);
-eq("all-day block at 21:30", remainingSeats("2026-09-16", "21:30", [closed]), 0);
+eq("all-day block at 12:00", remainingSeats("2026-09-16", "12:00", [closed]), 0);
+eq("all-day block at 21:00", remainingSeats("2026-09-16", "21:00", [closed]), 0);
 eq("block does not leak to next day", remainingSeats("2026-09-17", "19:00", [closed]), 12);
 
 // A timed block 20:00–22:00 also closes slots whose table would run into it.
